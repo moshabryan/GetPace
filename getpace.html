@@ -23,7 +23,7 @@
             "background_color": "#ffffff",
             "theme_color": "#F2D539",
             "icons": [{
-                "src": "1.jpg",
+                "src": "assets/foto1.png",
                 "sizes": "192x192",
                 "type": "image/jpeg"
             }]
@@ -231,7 +231,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
                 <!-- Logo dynamically changed via JS -->
-                <img src="1.jpg" id="app-logo" class="logo-img shadow-sm" alt="GetPace Logo">
+                <img src="foto1.jpg" id="app-logo" class="logo-img shadow-sm" alt="GetPace Logo">
                 <h1 class="h5 mb-0 fw-bold letter-spacing-tight">GetPace</h1>
             </div>
             <button class="btn btn-sm ios-glass border-0 d-flex align-items-center gap-2 shadow-sm py-1 px-3" onclick="quickAddWater()">
@@ -509,9 +509,9 @@
         
         function updateLogo(theme) {
             const logo = document.getElementById('app-logo');
-            // Light mode uses 1.jpg (Black logo, yellow bg)
-            // Dark mode uses 2.jpg (Yellow logo, black bg)
-            logo.src = theme === 'dark' ? '2.jpg' : '1.jpg';
+            // Light mode uses foto1.jpg (Black logo, yellow bg)
+            // Dark mode uses foto2.jpg (Yellow logo, black bg)
+            logo.src = theme === 'dark' ? 'foto2.jpg' : 'foto1.jpg';
         }
 
         window.navTo = function(viewId) {
