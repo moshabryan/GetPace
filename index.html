@@ -1,751 +1,1066 @@
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#F2D539">
-    <title>GetPace - Fitness & Nutrition Planner</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetPace</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <script>
-        const manifest = {
-            "name": "GetPace Fitness",
-            "short_name": "GetPace",
-            "description": "Fitness, Nutrition & Workout Planner",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#ffffff",
-            "theme_color": "#F2D539",
-            "icons": [{
-               "src": "assets/foto1.png",
-                "sizes": "192x192",
-                "type": "image/png"
-            }]
-        };
-        const manifestStr = encodeURIComponent(JSON.stringify(manifest));
-        document.write(`<link rel="manifest" href="data:application/json;charset=utf-8,${manifestStr}">`);
-    </script>
-
     <style>
         :root {
             --brand-yellow: #F2D539;
-            --brand-dark: #121212;
-            --text-main: #212529;
-            --bg-base: #f8f9fa;
+            --text-main: #1a1a1a;
+            --text-muted: #6c757d;
+            --bg-base: #f5f5f7;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.85);
+            --glass-shadow: rgba(0, 0, 0, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.75);
+            --input-border: rgba(255, 255, 255, 0.9);
         }
-
         [data-bs-theme="dark"] {
             --text-main: #f8f9fa;
+            --text-muted: #adb5bd;
             --bg-base: #0a0a0a;
+            --glass-bg: rgba(30, 30, 35, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --input-bg: rgba(0, 0, 0, 0.45);
+            --input-border: rgba(255, 255, 255, 0.18);
         }
-
+        * { box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 90px;
-            -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
-            position: relative;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        .ambient-blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(70px);
-            z-index: -1;
-            transition: all 0.5s ease;
-        }
-        .blob-1 {
-            top: -10%; left: -10%;
-            width: 350px; height: 350px;
-            background: rgba(242, 213, 57, 0.4); /* Yellow */
-        }
-        .blob-2 {
-            bottom: 5%; right: -15%;
-            width: 400px; height: 400px;
-            background: rgba(200, 200, 200, 0.2);
-        }
-        
-        [data-bs-theme="dark"] .blob-1 { background: rgba(242, 213, 57, 0.15); }
-        [data-bs-theme="dark"] .blob-2 { background: rgba(50, 50, 50, 0.5); }
+        .ambient-blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; }
+        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(242,213,57,0.5); }
+        .blob-2 { bottom: 5%; right: -15%; width: 450px; height: 450px; background: rgba(150,180,255,0.35); }
+        .blob-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: rgba(255,150,180,0.2); }
+        [data-bs-theme="dark"] .blob-1 { background: rgba(242,213,57,0.18); }
+        [data-bs-theme="dark"] .blob-2 { background: rgba(80,100,180,0.25); }
+        [data-bs-theme="dark"] .blob-3 { background: rgba(180,80,120,0.15); }
 
         .font-mono { font-family: 'Roboto Mono', monospace; }
-        .text-brand { color: #d4b51c; }
+        .text-brand { color: #b89c0e; }
         [data-bs-theme="dark"] .text-brand { color: var(--brand-yellow); }
-        .bg-brand { background-color: var(--brand-yellow); color: #000; }
 
         .ios-glass {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            border-right: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px var(--glass-shadow);
             border-radius: 1.5rem;
-            color: inherit;
+            transition: background 0.3s, border 0.3s, box-shadow 0.3s;
         }
-
-        [data-bs-theme="dark"] .ios-glass {
-            background: rgba(30, 30, 30, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            border-right: 1px solid rgba(255, 255, 255, 0.02);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
-
         .glass-input {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
             border-radius: 1rem;
             color: var(--text-main);
             padding: 0.75rem 1rem;
-            backdrop-filter: blur(10px);
-        }
-        [data-bs-theme="dark"] .glass-input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
+            width: 100%;
+            font-size: 16px;
         }
         .glass-input:focus {
-            background: rgba(255, 255, 255, 0.9);
             border-color: var(--brand-yellow);
-            box-shadow: 0 0 0 0.25rem rgba(242, 213, 57, 0.3);
             outline: none;
-        }
-        [data-bs-theme="dark"] .glass-input:focus {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: var(--brand-yellow);
+            box-shadow: 0 0 0 4px rgba(242,213,57,0.25);
         }
 
         .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            z-index: 1030;
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            display: flex;
-            justify-content: space-between;
+            position: fixed; bottom: 20px; left: 20px; right: 20px;
+            z-index: 100; padding: 0.75rem 1.5rem;
+            border-radius: 2rem; display: flex; justify-content: space-between;
         }
-
         .nav-item-custom {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            text-decoration: none;
-            opacity: 0.4;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            width: 30%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-main); opacity: 0.45; cursor: pointer; width: 30%;
+            transition: all 0.3s;
         }
-
-        .nav-item-custom.active {
-            opacity: 1;
-            color: var(--brand-yellow);
-            transform: translateY(-3px);
-        }
-        [data-bs-theme="light"] .nav-item-custom.active { color: #b89c0e; }
-
+        .nav-item-custom.active { opacity: 1; color: #b89c0e; transform: translateY(-3px); }
+        [data-bs-theme="dark"] .nav-item-custom.active { color: var(--brand-yellow); }
         .nav-item-custom i { font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item-custom span { font-size: 0.7rem; font-weight: 600; }
 
-        .view-section { display: none; animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .view-section { display: none; animation: popIn 0.4s; }
         .view-section.active { display: block; }
-        
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.97) translateY(15px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        @keyframes popIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .gender-btn { border: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
+        .gender-btn {
+            cursor: pointer; padding: 0.6rem; border-radius: 1rem;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+        }
         .gender-btn.selected {
             border-color: var(--brand-yellow);
-            color: var(--text-main);
-            background: rgba(242, 213, 57, 0.2);
+            background: rgba(242,213,57,0.22);
             font-weight: bold;
         }
 
-        #loader-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        [data-bs-theme="dark"] #loader-overlay { background: rgba(0,0,0,0.6); }
-        
-        .spinner {
-            width: 4rem; height: 4rem;
-            border: 0.3rem solid rgba(150,150,150,0.2);
-            border-top-color: var(--brand-yellow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .macro-box { text-align: center; padding: 1rem 0.5rem; border-radius: 1.2rem; }
         .icon-circle {
-            width: 44px; height: 44px;
-            border-radius: 50%;
+            width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 0.5rem auto;
-            font-size: 1.2rem;
+            margin: 0 auto 0.5rem auto; font-size: 1.2rem;
         }
-        
         .result-list { list-style: none; padding: 0; margin: 0; }
         .result-list li {
             padding: 0.85rem 0;
-            border-bottom: 1px solid rgba(150, 150, 150, 0.2);
-            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(150,150,150,0.15);
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;
         }
-        .result-list li:last-child { border-bottom: none; padding-bottom: 0; }
+        .result-list li:last-child { border-bottom: none; }
         .result-label { font-weight: 600; font-size: 0.9rem; }
-        .result-val { font-size: 0.85rem; opacity: 0.8; text-align: right; max-width: 60%; }
-        
-        .logo-img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; transition: 0.3s; }
+        .result-val { font-size: 0.85rem; opacity: 0.85; text-align: right; max-width: 60%; }
+
+        /* ===== LOGO BULAT ===== */
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid rgba(242, 213, 57, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s;
+            background: #F2D539;
+        }
+        [data-bs-theme="dark"] .logo-img {
+            border-color: rgba(242, 213, 57, 0.7);
+            background: #1a1a1a;
+        }
+        .logo-img-large {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid rgba(242, 213, 57, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 1rem;
+            display: block;
+            background: #F2D539;
+        }
+        [data-bs-theme="dark"] .logo-img-large {
+            border-color: rgba(242, 213, 57, 0.7);
+            background: #1a1a1a;
+        }
+
+        #login-screen {
+            min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            padding: 1rem;
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.35), transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(150,180,255,0.35), transparent 50%),
+                        var(--bg-base);
+        }
+        [data-bs-theme="dark"] #login-screen {
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.15), transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(80,100,180,0.2), transparent 50%),
+                        var(--bg-base);
+        }
+        .login-card { width: 100%; max-width: 420px; padding: 2rem; }
+
+        #app-wrapper { display: none; }
+        #app-wrapper.show { display: block; }
+
+        .user-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--brand-yellow); color: #000;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .user-avatar.admin-avatar {
+            background: linear-gradient(135deg, #dc3545, #b02a37); color: #fff;
+        }
+        .bbi-card {
+            background: linear-gradient(135deg, rgba(242,213,57,0.28), rgba(242,213,57,0.08)) !important;
+            border: 2px dashed rgba(242,213,57,0.55) !important;
+        }
+        .admin-badge {
+            background: linear-gradient(135deg, #dc3545, #b02a37);
+            color: #fff; font-size: 0.65rem;
+            padding: 2px 8px; border-radius: 20px;
+            font-weight: 700;
+        }
+        .admin-stat-card {
+            text-align: center; padding: 1rem; border-radius: 1rem;
+            background: rgba(242,213,57,0.15);
+        }
+        .admin-stat-card .num { font-size: 2rem; font-weight: 700; color: #b89c0e; }
+        [data-bs-theme="dark"] .admin-stat-card .num { color: var(--brand-yellow); }
+
+        .form-switch .form-check-input {
+            width: 3.2rem; height: 1.6rem; cursor: pointer;
+            background-color: rgba(150,150,150,0.4); border: none;
+        }
+        .form-check-input:checked {
+            background-color: var(--brand-yellow);
+        }
+
+        /* ===== TDEE CARD ===== */
+        .tdee-card {
+            padding: 2rem 1.5rem 1.75rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .tdee-number {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .tdee-unit {
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.75rem;
+        }
+        .tdee-row {
+            margin-top: auto;
+        }
+
+        /* ===== RESULTS GRID ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            align-items: stretch;
+        }
+
+        @media (min-width: 992px) {
+            .bottom-nav { display: none !important; }
+            main.container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+            .desktop-nav { display: flex !important; gap: 0.5rem; }
+            .desktop-nav button {
+                border: none; background: transparent; color: var(--text-main);
+                font-weight: 600; font-size: 0.9rem; padding: 0.5rem 1rem;
+                border-radius: 0.75rem; opacity: 0.55; cursor: pointer;
+            }
+            .desktop-nav button.active {
+                opacity: 1; background: rgba(242,213,57,0.22); color: #b89c0e;
+            }
+            [data-bs-theme="dark"] .desktop-nav button.active { color: var(--brand-yellow); }
+            #view-home .home-wrapper {
+                display: block;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            #history-container {
+                display: grid !important;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 1rem !important;
+            }
+        }
+        @media (max-width: 991.98px) {
+            .desktop-nav { display: none !important; }
+            .tdee-number { font-size: 3rem; }
+        }
     </style>
 </head>
 <body>
-    
-    <div class="ambient-blob blob-1"></div>
-    <div class="ambient-blob blob-2"></div>
-    
-    <header class="ios-glass m-3 p-3 sticky-top" style="z-index: 1020;">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-                <!-- Logo dynamically changed via JS -->
-                <img src="assets/foto1.png" id="app-logo" class="logo-img shadow-sm" alt="GetPace Logo">
-                <h1 class="h5 mb-0 fw-bold letter-spacing-tight">GetPace</h1>
-            </div>
-            <button class="btn btn-sm ios-glass border-0 d-flex align-items-center gap-2 shadow-sm py-1 px-3" onclick="quickAddWater()">
-                <i class="fa-solid fa-droplet text-primary"></i>
-                <span id="header-water" class="font-mono fw-bold small">0.0L</span>
-                <i class="fa-solid fa-plus small opacity-50"></i>
-            </button>
-        </div>
-    </header>
 
-    <main class="container px-3 pb-5">
-        
-        <section id="view-home" class="view-section active">
-            <div class="mb-4 px-2">
-                <h2 class="h3 fw-bold mb-0 t-greeting">Halo, GetPacer!</h2>
-                <p class="small opacity-75 t-subtitle">Mari hitung target tubuh idealmu hari ini.</p>
-            </div>
+    <!-- LOGIN -->
+    <div id="login-screen">
+        <div class="login-card ios-glass">
+            <img id="login-logo" class="logo-img-large" alt="GetPace Logo">
+            <h2 class="h3 fw-bold text-center mb-1">GetPace</h2>
+            <p class="text-center small mb-4" style="color: var(--text-muted);">Fitness & Nutrition Planner</p>
 
-            <form id="calcForm" class="ios-glass p-4 d-flex flex-column gap-3">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold t-weight">Berat (kg)</label>
-                        <input type="number" id="inp-weight" class="form-control glass-input font-mono" placeholder="70" required min="30" max="300" step="0.1">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-semibold t-height">Tinggi (cm)</label>
-                        <input type="number" id="inp-height" class="form-control glass-input font-mono" placeholder="175" required min="100" max="250">
-                    </div>
-                </div>
-
+            <div class="d-flex flex-column gap-3">
                 <div>
-                    <label class="form-label small fw-semibold t-age">Usia (Tahun)</label>
-                    <input type="number" id="inp-age" class="form-control glass-input font-mono" placeholder="25" required min="10" max="100">
+                    <label class="form-label small fw-semibold">
+                        <i class="fa-solid fa-user me-1"></i> Username
+                    </label>
+                    <input type="text" id="login-username" class="glass-input font-mono"
+                           placeholder="Username" autocapitalize="none" autocomplete="off">
                 </div>
-
                 <div>
-                    <label class="form-label small fw-semibold mb-2 t-gender">Jenis Kelamin</label>
-                    <div class="d-flex gap-2">
-                        <div class="flex-fill ios-glass py-2 text-center gender-btn selected shadow-sm" data-val="male">
-                            <i class="fa-solid fa-mars text-primary me-1"></i> <span class="t-male">Pria</span>
-                        </div>
-                        <div class="flex-fill ios-glass py-2 text-center gender-btn shadow-sm" data-val="female">
-                            <i class="fa-solid fa-venus text-danger me-1"></i> <span class="t-female">Wanita</span>
-                        </div>
-                    </div>
-                    <input type="hidden" id="inp-gender" value="male">
+                    <label class="form-label small fw-semibold">
+                        <i class="fa-solid fa-lock me-1"></i> Password
+                    </label>
+                    <input type="password" id="login-password" class="glass-input font-mono"
+                           placeholder="Password" autocomplete="off">
                 </div>
 
-                <div>
-                    <label class="form-label small fw-semibold t-activity">Aktivitas Harian</label>
-                    <select id="inp-activity" class="form-select glass-input">
-                        <option value="1.2" class="t-act1">Sangat jarang (Kerja kantoran)</option>
-                        <option value="1.375" class="t-act2">Jarang (1-3 hari/mgg)</option>
-                        <option value="1.55" selected class="t-act3">Normal (3-5 hari/mgg)</option>
-                        <option value="1.725" class="t-act4">Sering (6-7 hari/mgg)</option>
-                        <option value="1.9" class="t-act5">Sangat sering (Pekerja fisik berat)</option>
-                    </select>
+                <div id="login-error" class="alert alert-danger py-2 small mb-0" style="display:none;">
+                    <span id="login-error-msg">Error</span>
                 </div>
 
-                <button type="submit" class="btn bg-brand fw-bold rounded-4 py-3 mt-3 shadow d-flex justify-content-center align-items-center gap-2">
-                    <i class="fa-solid fa-calculator"></i> <span class="t-calculate">Hitung & Simpan</span>
-                </button>
-            </form>
-        </section>
-
-        <section id="view-results" class="view-section">
-            <div class="d-flex justify-content-between align-items-center mb-4 px-2">
-                <h2 class="h3 fw-bold mb-0 t-res-title">Hasil Analisis</h2>
-                <button class="btn btn-sm ios-glass border-0 shadow-sm rounded-pill px-3" onclick="navTo('home')">
-                    <i class="fa-solid fa-arrow-left me-1"></i> <span class="t-back">Kembali</span>
+                <button type="button" id="btnLogin"
+                        style="background: #F2D539; color: #000; font-weight: 700; font-size: 1.05rem;
+                               border: none; border-radius: 1rem; padding: 1rem; cursor: pointer;">
+                    <i class="fa-solid fa-right-to-bracket"></i> SIGN IN
                 </button>
             </div>
-
-            <!-- Calories -->
-            <div class="ios-glass p-4 text-center mb-3">
-                <p class="small opacity-75 mb-1 fw-medium t-tdee">Total Kalori Harian (TDEE)</p>
-                <div class="display-3 fw-bold font-mono mb-1 text-brand" style="text-shadow: 0 2px 10px rgba(242, 213, 57, 0.2);"><span id="out-tdee">0</span></div>
-                <p class="small fw-bold opacity-75 mb-0">KCAL</p>
-            </div>
-
-            <!-- Macros -->
-            <div class="row g-2 mb-3">
-                <div class="col-4">
-                    <div class="ios-glass macro-box">
-                        <div class="icon-circle text-danger" style="background: rgba(220, 53, 69, 0.15);"><i class="fa-solid fa-drumstick-bite"></i></div>
-                        <div class="small fw-bold t-protein">Protein</div>
-                        <div id="out-pro" class="font-mono fw-bold mt-1 fs-5">0g</div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="ios-glass macro-box">
-                        <div class="icon-circle text-warning" style="background: rgba(255, 193, 7, 0.2);"><i class="fa-solid fa-cheese"></i></div>
-                        <div class="small fw-bold t-fat">Lemak</div>
-                        <div id="out-fat" class="font-mono fw-bold mt-1 fs-5">0g</div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="ios-glass macro-box">
-                        <div class="icon-circle text-success" style="background: rgba(25, 135, 84, 0.15);"><i class="fa-solid fa-wheat-awn"></i></div>
-                        <div class="small fw-bold t-carbs">Karbo</div>
-                        <div id="out-car" class="font-mono fw-bold mt-1 fs-5">0g</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hydration -->
-            <div class="ios-glass p-3 px-4 mb-4 d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-circle text-primary mb-0 shadow-sm" style="background: rgba(13, 110, 253, 0.15);"><i class="fa-solid fa-droplet"></i></div>
-                    <div>
-                        <h6 class="fw-bold mb-0 t-water-req">Target Air</h6>
-                        <span class="small opacity-50 t-per-day">Per hari</span>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <span id="out-water" class="fs-3 fw-bold font-mono text-primary">0</span><span class="fw-bold">L</span>
-                </div>
-            </div>
-
-            <div class="ios-glass p-4 mb-3">
-                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2 pb-2" style="border-bottom: 1px solid rgba(150,150,150,0.2);">
-                    <i class="fa-solid fa-utensils text-success"></i> <span class="t-nutri-rec">Rekomendasi Nutrisi Harian</span>
-                </h6>
-                <ul id="out-nutrition" class="result-list">
-                    <!-- Injected via JS -->
-                </ul>
-            </div>
-
-            <div class="ios-glass p-4 mb-5">
-                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2 pb-2" style="border-bottom: 1px solid rgba(150,150,150,0.2);">
-                    <i class="fa-solid fa-dumbbell text-brand"></i> <span class="t-workout-rec">Rencana Latihan (Eksekusi)</span>
-                </h6>
-                <ul id="out-workout" class="result-list">
-                    <!-- Injected via JS -->
-                </ul>
-            </div>
-        </section>
-
-        <section id="view-history" class="view-section">
-            <h2 class="h3 fw-bold mb-4 px-2 t-history">Riwayat Kalkulasi</h2>
-            <div id="history-container" class="d-flex flex-column gap-3 pb-5">
-                <!-- History Cards go here -->
-            </div>
-        </section>
-
-        <section id="view-settings" class="view-section">
-            <h2 class="h3 fw-bold mb-4 px-2 t-settings">Pengaturan</h2>
-            
-            <div class="ios-glass p-4 d-flex flex-column gap-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0 fw-bold t-dark-mode">Mode Gelap</h6>
-                        <span class="small opacity-50 t-dark-desc">Tampilan dengan logo kuning</span>
-                    </div>
-                    <div class="form-check form-switch fs-4 mb-0">
-                        <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
-                    </div>
-                </div>
-
-                <div style="height: 1px; background: rgba(150,150,150,0.2);"></div>
-
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0 fw-bold t-language">Bahasa</h6>
-                        <span class="small opacity-50 t-lang-desc">Pilih ID atau EN</span>
-                    </div>
-                    <div class="btn-group shadow-sm" role="group">
-                        <input type="radio" class="btn-check lang-switch" name="lang" id="langId" value="id" autocomplete="off" checked>
-                        <label class="btn btn-outline-secondary btn-sm" for="langId">ID</label>
-
-                        <input type="radio" class="btn-check lang-switch" name="lang" id="langEn" value="en" autocomplete="off">
-                        <label class="btn btn-outline-secondary btn-sm" for="langEn">EN</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-5 opacity-50">
-                <small class="d-block mb-1 fw-bold">GetPace PWA</small>
-                <small class="font-mono" style="font-size: 0.65rem;">Offline Ready (LocalStorage)</small>
-            </div>
-        </section>
-
-    </main>
-
-    <nav class="ios-glass bottom-nav shadow-lg">
-        <div class="nav-item-custom active" onclick="navTo('home')">
-            <i class="fa-solid fa-house"></i>
-            <span class="t-nav-home">Utama</span>
         </div>
-        <div class="nav-item-custom" onclick="navTo('history')">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span class="t-nav-hist">Riwayat</span>
-        </div>
-        <div class="nav-item-custom" onclick="navTo('settings')">
-            <i class="fa-solid fa-gear"></i>
-            <span class="t-nav-set">Setelan</span>
-        </div>
-    </nav>
+    </div>
 
-    <div id="loader-overlay">
-        <div class="spinner mb-3"></div>
-        <div class="fw-bold fs-5 text-white t-loading" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Memproses...</div>
+    <!-- APP -->
+    <div id="app-wrapper">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+        <div class="ambient-blob blob-3"></div>
+
+        <header class="ios-glass m-3 p-3 sticky-top" style="z-index: 50;">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <img id="app-logo" class="logo-img" alt="GetPace Logo">
+                    <h1 class="h5 mb-0 fw-bold">GetPace</h1>
+                </div>
+                <nav class="desktop-nav">
+                    <button class="dnav-btn active" data-view="home">Home</button>
+                    <button class="dnav-btn" data-view="history">History</button>
+                    <button class="dnav-btn" data-view="admin" id="adminNavBtn" style="display:none;">Admin</button>
+                    <button class="dnav-btn" data-view="settings">Settings</button>
+                </nav>
+                <div class="dropdown">
+                    <button class="btn btn-sm p-0 border-0" data-bs-toggle="dropdown" style="background:transparent;">
+                        <div class="user-avatar" id="user-avatar">?</div>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2">
+                        <li class="px-3 py-2 border-bottom">
+                            <div class="fw-bold small" id="dropdown-username">-</div>
+                        </li>
+                        <li><button class="dropdown-item small" data-nav="settings">
+                            <i class="fa-solid fa-gear me-2"></i> Settings</button></li>
+                        <li><button class="dropdown-item small text-danger" data-action="logout">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i> Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <main class="container px-3 pb-5">
+
+            <!-- HOME -->
+            <section id="view-home" class="view-section active">
+                <div class="home-wrapper">
+                    <div class="mb-4 px-2">
+                        <h2 class="h3 fw-bold mb-0" id="welcome-greeting">Hello!</h2>
+                        <p class="small mb-0" style="color: var(--text-muted);">Let's calculate your ideal body targets today.</p>
+                    </div>
+                    <div class="ios-glass p-4 d-flex flex-column gap-3">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Weight (kg)</label>
+                                <input type="number" id="inp-weight" class="glass-input font-mono" placeholder="70" step="0.1">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Height (cm)</label>
+                                <input type="number" id="inp-height" class="glass-input font-mono" placeholder="175">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold">Age (Years)</label>
+                            <input type="number" id="inp-age" class="glass-input font-mono" placeholder="25">
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold mb-2">Gender</label>
+                            <div class="d-flex gap-2">
+                                <div class="flex-fill text-center gender-btn selected" data-val="male">
+                                    <i class="fa-solid fa-mars text-primary me-1"></i> Male
+                                </div>
+                                <div class="flex-fill text-center gender-btn" data-val="female">
+                                    <i class="fa-solid fa-venus text-danger me-1"></i> Female
+                                </div>
+                            </div>
+                            <input type="hidden" id="inp-gender" value="male">
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold">Daily Activity</label>
+                            <select id="inp-activity" class="glass-input">
+                                <option value="1.2">Sedentary (Office job)</option>
+                                <option value="1.375">Lightly active (1-3 days/week)</option>
+                                <option value="1.55" selected>Moderately active (3-5 days/week)</option>
+                                <option value="1.725">Very active (6-7 days/week)</option>
+                                <option value="1.9">Super active (Physical job)</option>
+                            </select>
+                        </div>
+                        <button type="button" id="btnCalculate"
+                                style="background: #F2D539; color: #000; font-weight: 700; border: none;
+                                       border-radius: 1rem; padding: 1rem; cursor: pointer; margin-top: 0.5rem;">
+                            <i class="fa-solid fa-calculator"></i>
+                            CALCULATE & SAVE
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESULTS -->
+            <section id="view-results" class="view-section">
+                <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                    <h2 class="h3 fw-bold mb-0">Analysis Result</h2>
+                    <button class="btn btn-sm ios-glass border-0" data-nav="home">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Back
+                    </button>
+                </div>
+
+                <div class="ios-glass bbi-card p-4 mb-4 text-center">
+                    <p class="small mb-1 fw-medium" style="color: var(--text-muted);">
+                        <i class="fa-solid fa-bullseye text-warning me-1"></i>
+                        Ideal Body Weight (IBW)
+                    </p>
+                    <div class="display-4 fw-bold font-mono mb-1 text-brand">
+                        <span id="out-bbi">0</span><span class="fs-4"> kg</span>
+                    </div>
+                    <p class="small fw-bold mb-2" style="color: var(--text-muted);">
+                        Normal Range:
+                        <span id="out-bbi-range" class="font-mono">-</span> kg
+                    </p>
+                    <div id="out-bbi-status" class="badge rounded-pill px-3 py-2">-</div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="ios-glass tdee-card">
+                        <p class="small mb-3 fw-medium" style="color: var(--text-muted);">
+                            Total Daily Energy Expenditure (TDEE)
+                        </p>
+                        <div class="tdee-number font-mono text-brand">
+                            <span id="out-tdee">0</span>
+                        </div>
+                        <p class="tdee-unit" style="color: var(--text-muted);">KCAL / DAY</p>
+                        <div class="row g-2 small tdee-row">
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(220,53,69,0.12);">
+                                    <div class="fw-bold text-danger">Cut</div>
+                                    <div class="font-mono small" id="out-cut">-</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(25,135,84,0.12);">
+                                    <div class="fw-bold text-success">Maintain</div>
+                                    <div class="font-mono small" id="out-maint">-</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(255,193,7,0.15);">
+                                    <div class="fw-bold text-warning">Bulk</div>
+                                    <div class="font-mono small" id="out-bulk">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <div class="ios-glass macro-box">
+                                    <div class="icon-circle text-danger" style="background: rgba(220,53,69,0.15);">
+                                        <i class="fa-solid fa-drumstick-bite"></i>
+                                    </div>
+                                    <div class="small fw-bold">Protein</div>
+                                    <div id="out-pro" class="font-mono fw-bold mt-1 fs-5">0g</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ios-glass macro-box">
+                                    <div class="icon-circle text-warning" style="background: rgba(255,193,7,0.2);">
+                                        <i class="fa-solid fa-cheese"></i>
+                                    </div>
+                                    <div class="small fw-bold">Fat</div>
+                                    <div id="out-fat" class="font-mono fw-bold mt-1 fs-5">0g</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ios-glass macro-box">
+                                    <div class="icon-circle text-success" style="background: rgba(25,135,84,0.15);">
+                                        <i class="fa-solid fa-wheat-awn"></i>
+                                    </div>
+                                    <div class="small fw-bold">Carbs</div>
+                                    <div id="out-car" class="font-mono fw-bold mt-1 fs-5">0g</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ios-glass p-3 d-flex align-items-center justify-content-between flex-grow-1">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-circle text-primary mb-0" style="background: rgba(13,110,253,0.15);">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Water Target</h6>
+                                    <span class="small" style="color: var(--text-muted);">Per day</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span id="out-water" class="fs-3 fw-bold font-mono text-primary">0</span><span class="fw-bold">L</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-4">
+                    <div class="col-12 col-lg-6">
+                        <div class="ios-glass p-4 h-100">
+                            <h6 class="fw-bold mb-3">
+                                <i class="fa-solid fa-utensils text-success me-2"></i>
+                                Detailed Nutrition Guide
+                            </h6>
+                            <ul id="out-nutrition" class="result-list"></ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="ios-glass p-4 h-100">
+                            <h6 class="fw-bold mb-3">
+                                <i class="fa-solid fa-dumbbell text-brand me-2"></i>
+                                Workout Plan
+                            </h6>
+                            <ul id="out-workout" class="result-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HISTORY -->
+            <section id="view-history" class="view-section">
+                <h2 class="h3 fw-bold mb-4 px-2">Calculation History</h2>
+                <div id="history-container" class="d-flex flex-column gap-3"></div>
+            </section>
+
+            <!-- ADMIN -->
+            <section id="view-admin" class="view-section">
+                <h2 class="h3 fw-bold mb-4 px-2">
+                    <i class="fa-solid fa-shield-halved text-danger me-2"></i>Admin Panel
+                </h2>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="ios-glass admin-stat-card">
+                            <div class="num" id="stat-total-users">0</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Total Users</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="ios-glass admin-stat-card">
+                            <div class="num" id="stat-total-records">0</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Total Calculations</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="ios-glass admin-stat-card">
+                            <div class="num" id="stat-active-users">0</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Active Users</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="ios-glass admin-stat-card">
+                            <div class="num">👑</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Admin</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ios-glass p-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fa-solid fa-users text-primary me-2"></i> User List
+                    </h5>
+                    <div id="admin-user-list" class="d-flex flex-column gap-3"></div>
+                </div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section id="view-settings" class="view-section">
+                <h2 class="h3 fw-bold mb-4 px-2">Settings</h2>
+
+                <div class="ios-glass p-4 mb-3 d-flex align-items-center gap-3">
+                    <div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem;" id="settings-avatar">?</div>
+                    <div>
+                        <div class="fw-bold" id="settings-username">-</div>
+                        <div class="small" style="color: var(--text-muted);" id="settings-role">User</div>
+                    </div>
+                </div>
+
+                <div class="ios-glass p-4 d-flex flex-column gap-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Dark Mode</h6>
+                        </div>
+                        <div class="form-check form-switch fs-4 mb-0">
+                            <input class="form-check-input" type="checkbox" id="themeSwitch">
+                        </div>
+                    </div>
+
+                    <div style="height:1px; background: rgba(150,150,150,0.2);"></div>
+
+                    <button type="button" class="btn btn-outline-danger rounded-4 py-3 fw-bold" id="btnLogout">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i>
+                        Logout
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <nav class="ios-glass bottom-nav">
+            <div class="nav-item-custom active" data-nav="home">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item-custom" data-nav="history">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </div>
+            <div class="nav-item-custom" data-nav="admin" id="adminBottomNav" style="display:none;">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Admin</span>
+            </div>
+            <div class="nav-item-custom" data-nav="settings">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </div>
+        </nav>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Global State
-        let currentLang = 'id';
-        let hydrationCount = 0;
-        let historyData = JSON.parse(localStorage.getItem('getpace_history_v4')) || [];
+    /* ============================================================ */
+    /* LOGO SYSTEM — SVG default, coba load foto1/foto2 */
+    /* ============================================================ */
+    function buildLogoDataURI(bgColor, barColor) {
+        var svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+            '<rect width="100" height="100" fill="' + bgColor + '"/>' +
+            '<g fill="' + barColor + '">' +
+            '<rect x="8"  y="42" width="3" height="16" rx="1.5"/>' +
+            '<rect x="14" y="32" width="4" height="36" rx="2"/>' +
+            '<rect x="21" y="23" width="4" height="54" rx="2"/>' +
+            '<rect x="28" y="35" width="4" height="30" rx="2"/>' +
+            '<rect x="35" y="28" width="4" height="44" rx="2"/>' +
+            '<rect x="42" y="21" width="4" height="58" rx="2"/>' +
+            '<rect x="49" y="35" width="4" height="30" rx="2"/>' +
+            '<rect x="56" y="24" width="4" height="52" rx="2"/>' +
+            '<rect x="63" y="32" width="4" height="36" rx="2"/>' +
+            '<rect x="70" y="23" width="4" height="54" rx="2"/>' +
+            '<rect x="77" y="32" width="4" height="36" rx="2"/>' +
+            '<rect x="84" y="42" width="3" height="16" rx="1.5"/>' +
+            '</g></svg>';
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
 
-        // Dictionary
-        const dict = {
-            id: {
-                greeting: "Halo, GetPacer!", subtitle: "Mari hitung target tubuh idealmu hari ini.",
-                weight: "Berat (kg)", height: "Tinggi (cm)", age: "Usia (Thn)", gender: "Kelamin",
-                male: "Pria", female: "Wanita", activity: "Aktivitas Harian",
-                act1: "Sangat jarang (Kerja kantoran)", act2: "Jarang (1-3 hari/mgg)", act3: "Normal (3-5 hari/mgg)", act4: "Sering (6-7 hari/mgg)", act5: "Sangat sering (Pekerja fisik)",
-                calculate: "Hitung & Simpan", resTitle: "Hasil Analisis", back: "Kembali",
-                tdee: "Total Kalori Harian (TDEE)", protein: "Protein", fat: "Lemak", carbs: "Karbo", 
-                waterReq: "Target Air", perDay: "Per hari", 
-                nutriRec: "Rekomendasi Nutrisi Harian", workoutRec: "Rencana Latihan (Eksekusi)", 
-                history: "Riwayat Kalkulasi", noData: "Belum ada data. Lakukan perhitungan untuk menyimpan.",
-                settings: "Pengaturan", darkMode: "Mode Gelap", darkDesc: "Tampilan dengan logo kuning",
-                language: "Bahasa", langDesc: "Pilih ID atau EN", loading: "Memproses...",
-                navHome: "Utama", navHist: "Riwayat", navSet: "Setelan"
-            },
-            en: {
-                greeting: "Hello, GetPacer!", subtitle: "Let's calculate your ideal body targets today.",
-                weight: "Weight (kg)", height: "Height (cm)", age: "Age (Yrs)", gender: "Gender",
-                male: "Male", female: "Female", activity: "Daily Activity",
-                act1: "Sedentary (Office job)", act2: "Lightly active (1-3 days/wk)", act3: "Moderately active (3-5 days/wk)", act4: "Very active (6-7 days/wk)", act5: "Super active (Physical job)",
-                calculate: "Calculate & Save", resTitle: "Analysis Result", back: "Back",
-                tdee: "Total Daily Energy Exp.", protein: "Protein", fat: "Fat", carbs: "Carbs", 
-                waterReq: "Water Target", perDay: "Per day", 
-                nutriRec: "Daily Nutrition Guide", workoutRec: "Execution Plan (Workout)", 
-                history: "Calculation History", noData: "No data yet. Calculate to save.",
-                settings: "Settings", darkMode: "Dark Mode", darkDesc: "UI with yellow logo",
-                language: "Language", langDesc: "Select ID or EN", loading: "Processing...",
-                navHome: "Home", navHist: "History", navSet: "Settings"
-            }
-        };
+    var LOGO_LIGHT = buildLogoDataURI('#F2D539', '#000000');
+    var LOGO_DARK  = buildLogoDataURI('#1a1a1a', '#F2D539');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            setupEventListeners();
-            loadLocalPreferences();
-            renderHistory();
+    function setLogoSVG() {
+        var theme = document.documentElement.getAttribute('data-bs-theme');
+        var svgSrc = theme === 'dark' ? LOGO_DARK : LOGO_LIGHT;
+        ['app-logo', 'login-logo'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.src = svgSrc;
         });
+    }
 
-        function setupEventListeners() {
-            document.querySelectorAll('.gender-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('selected'));
-                    e.currentTarget.classList.add('selected');
-                    document.getElementById('inp-gender').value = e.currentTarget.dataset.val;
-                });
+    function tryLoadRealLogo(fileName, targetIds) {
+        var test = new Image();
+        test.onload = function() {
+            targetIds.forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.src = fileName;
             });
-
-            document.getElementById('calcForm').addEventListener('submit', handleCalculate);
-
-            document.getElementById('themeSwitch').addEventListener('change', (e) => {
-                const theme = e.target.checked ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-bs-theme', theme);
-                localStorage.setItem('getpace_theme_v4', theme);
-                updateLogo(theme);
-            });
-
-            document.querySelectorAll('.lang-switch').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    if(e.target.checked) setLanguage(e.target.value);
-                });
-            });
-        }
-        
-        function updateLogo(theme) {
-            const logo = document.getElementById('app-logo');
-            // Light mode uses foto1.png (Black logo, yellow bg)
-            // Dark mode uses foto2.png (Yellow logo, black bg)
-            logo.src = theme === 'dark' ? 'foto2.png' : 'assets/foto1.png';
-        }
-
-        window.navTo = function(viewId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
-
-            const navItems = document.querySelectorAll('.nav-item-custom');
-            navItems.forEach(el => el.classList.remove('active'));
-            if(viewId === 'home') navItems[0].classList.add('active');
-            if(viewId === 'history') navItems[1].classList.add('active');
-            if(viewId === 'settings') navItems[2].classList.add('active');
-            window.scrollTo(0,0);
         };
-
-        window.quickAddWater = function() {
-            hydrationCount += 0.25;
-            document.getElementById('header-water').innerText = hydrationCount.toFixed(1) + 'L';
-            if(navigator.vibrate) navigator.vibrate(40);
+        test.onerror = function() {
+            console.log('ℹ️ ' + fileName + ' tidak ditemukan, pakai SVG logo.');
         };
+        test.src = fileName;
+    }
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('getpace_lang_v4', lang);
-            const t = dict[lang];
-            
-            Object.keys(t).forEach(key => {
-                const els = document.querySelectorAll(`.t-${key.replace(/[A-Z]/g, m => "-" + m.toLowerCase())}`);
-                els.forEach(el => el.innerText = t[key]);
-            });
+    function updateLogos() {
+        var theme = document.documentElement.getAttribute('data-bs-theme');
+        var fileName = theme === 'dark' ? 'foto2.png' : 'foto1.png';
+        setLogoSVG();
+        tryLoadRealLogo(fileName, ['app-logo', 'login-logo']);
+    }
+
+    /* ============================================================ */
+    /* USER DATABASE */
+    /* ============================================================ */
+    var USERS = {
+        "arinzaadine":    { password: "getpace2026", name: "Arinza Adine",    greet: "Arinza",  role: "user" },
+        "prasetyaaldi":   { password: "getpace2026", name: "Aldi Prasetya",   greet: "Aldi",    role: "user" },
+        "agathamaria":    { password: "getpace2026", name: "Maria Agatha",    greet: "Maria",   role: "user" },
+        "yanuardian":     { password: "getpace2026", name: "Yanuar Dian",     greet: "Yanuar",  role: "user" },
+        "pasaribudedy":   { password: "getpace2026", name: "Dedy Pasaribu",   greet: "Dedy",    role: "user" },
+        "oddyaurelius":   { password: "getpace2026", name: "Oddy Aurelius",   greet: "Oddy",    role: "user" },
+        "petrisiasherly": { password: "getpace2026", name: "Sherly Petrisia", greet: "Sherly",  role: "user" },
+        "putraadji":      { password: "getpace2026", name: "Adji Putra",      greet: "Adji",    role: "user" },
+        "warsielsyana":   { password: "getpace2026", name: "Elsyana Warsi",   greet: "Elsyana", role: "user" },
+        "daryonotitus":   { password: "getpace2026", name: "Titus Daryono",   greet: "Titus",   role: "user" },
+        "moshaadmin":     { password: "moshaadmin",  name: "Mosha Admin",     greet: "Mosha",   role: "admin" }
+    };
+
+    var currentUser = null;
+    var currentUserData = null;
+    var historyData = [];
+
+    /* ============================================================ */
+    /* LOGIN */
+    /* ============================================================ */
+    function tryLogin() {
+        var userInp = document.getElementById('login-username');
+        var passInp = document.getElementById('login-password');
+        var errBox = document.getElementById('login-error');
+        var errMsg = document.getElementById('login-error-msg');
+
+        var username = (userInp.value || '').trim().toLowerCase();
+        var password = (passInp.value || '').trim();
+
+        errBox.style.display = 'none';
+
+        if (!username || !password) {
+            errMsg.innerText = "Username and password are required!";
+            errBox.style.display = 'block';
+            return;
+        }
+        if (!USERS.hasOwnProperty(username)) {
+            errMsg.innerText = "Username not found!";
+            errBox.style.display = 'block';
+            return;
+        }
+        if (USERS[username].password !== password) {
+            errMsg.innerText = "Wrong password!";
+            errBox.style.display = 'block';
+            return;
+        }
+
+        currentUser = username;
+        currentUserData = USERS[username];
+        showApp();
+    }
+
+    function showApp() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app-wrapper').classList.add('show');
+
+        var user = currentUserData;
+        var isAdmin = user.role === 'admin';
+        var initials = user.name.split(' ').map(function(n){ return n[0]; }).join('').substring(0,2).toUpperCase();
+
+        document.getElementById('user-avatar').innerText = initials;
+        document.getElementById('user-avatar').className = 'user-avatar' + (isAdmin ? ' admin-avatar' : '');
+        document.getElementById('settings-avatar').innerText = initials;
+        document.getElementById('settings-avatar').className = 'user-avatar' + (isAdmin ? ' admin-avatar' : '');
+        document.getElementById('dropdown-username').innerText = user.name;
+        document.getElementById('settings-username').innerText = user.name;
+        document.getElementById('settings-role').innerText = isAdmin ? 'Administrator' : 'GetPace User';
+
+        updateGreeting();
+
+        if (isAdmin) {
+            document.getElementById('adminNavBtn').style.display = 'inline-block';
+            document.getElementById('adminBottomNav').style.display = 'flex';
+        } else {
+            document.getElementById('adminNavBtn').style.display = 'none';
+            document.getElementById('adminBottomNav').style.display = 'none';
+        }
+
+        var storageKey = 'getpace_history_v2_' + currentUser;
+        var stored = localStorage.getItem(storageKey);
+        historyData = stored ? JSON.parse(stored) : [];
+
+        renderHistory();
+        if (isAdmin) renderAdminPanel();
+        navTo('home');
+    }
+
+    function updateGreeting() {
+        if (!currentUserData) return;
+        var greetName = currentUserData.greet || currentUserData.name.split(' ')[0];
+        var el = document.getElementById('welcome-greeting');
+        if (el) el.innerText = 'Hello, ' + greetName + '!';
+    }
+
+    /* ============ LOGOUT ============ */
+    function handleLogout() {
+        currentUser = null;
+        currentUserData = null;
+        historyData = [];
+
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+        document.getElementById('app-wrapper').classList.remove('show');
+        document.getElementById('login-screen').style.display = 'flex';
+    }
+
+    /* ============ THEME ============ */
+    function toggleTheme(isDark) {
+        var theme = isDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('getpace_theme_v2', theme);
+        updateLogos();
+    }
+
+    function navTo(viewId) {
+        document.querySelectorAll('.view-section').forEach(function(el){ el.classList.remove('active'); });
+        var target = document.getElementById('view-' + viewId);
+        if (target) target.classList.add('active');
+        document.querySelectorAll('.nav-item-custom').forEach(function(el){
+            el.classList.toggle('active', el.dataset.nav === viewId);
+        });
+        document.querySelectorAll('.dnav-btn').forEach(function(el){
+            el.classList.toggle('active', el.dataset.view === viewId);
+        });
+        window.scrollTo(0, 0);
+
+        if (viewId === 'history') {
             renderHistory();
         }
+    }
 
-        function loadLocalPreferences() {
-            const savedTheme = localStorage.getItem('getpace_theme_v4') || 'light';
-            document.documentElement.setAttribute('data-bs-theme', savedTheme);
-            if(savedTheme === 'dark') document.getElementById('themeSwitch').checked = true;
-            updateLogo(savedTheme);
+    function hitungBBI(tinggi, gender) {
+        var base = tinggi - 100;
+        var faktor = gender === 'male' ? 0.10 : 0.15;
+        var bbi = base - (base * faktor);
+        return { bbi: bbi, min: bbi * 0.9, max: bbi * 1.1 };
+    }
 
-            const savedLang = localStorage.getItem('getpace_lang_v4') || 'id';
-            if(savedLang === 'en') document.getElementById('langEn').checked = true;
-            else document.getElementById('langId').checked = true;
-            setLanguage(savedLang);
+    function generateNutrition(proGram, fatGram, carGram, berat) {
+        var p = {
+            dadaAyam: Math.round(proGram * 0.35),
+            telur: Math.round(proGram * 0.20 / 6),
+            tahuTempe: Math.round(proGram * 0.15),
+            ikan: Math.round(proGram * 0.20),
+            susu: Math.round(proGram * 0.10 / 8),
+            nasiMerah: Math.round(carGram * 0.35 / 25),
+            oatmeal: Math.round(carGram * 0.15 / 27),
+            ubi: Math.round(carGram * 0.15 / 20),
+            roti: Math.round(carGram * 0.15 / 15),
+            alpukat: Math.round(fatGram * 0.30 / 15),
+            minyakZaitun: Math.round(fatGram * 0.20 / 14),
+            kuningTelur: Math.round(fatGram * 0.15 / 5),
+            keju: Math.round(fatGram * 0.15 / 7),
+            buah: Math.max(2, Math.round(berat / 30)),
+            sayur: Math.max(2, Math.round(berat / 25))
+        };
+        return [
+            { label: "🍗 Animal Protein", val: "Chicken breast <b>"+p.dadaAyam+"g</b> · Eggs <b>"+Math.max(1,p.telur)+" pcs</b> · Fish <b>"+p.ikan+"g</b>" },
+            { label: "🌱 Plant Protein", val: "Tofu/Tempeh <b>"+p.tahuTempe+"g</b> · Milk <b>"+Math.max(1,p.susu)+" glasses</b>" },
+            { label: "🍚 Complex Carbs", val: "Brown rice <b>"+p.nasiMerah+" scoops</b> · Oatmeal <b>"+Math.max(1,p.oatmeal)+" servings</b>" },
+            { label: "🥔 Extra Carbs", val: "Sweet potato <b>"+(p.ubi*100)+"g</b> · Whole wheat bread <b>"+Math.max(1,p.roti)+" slices</b>" },
+            { label: "🥑 Healthy Fats", val: "Avocado <b>"+Math.max(1,Math.round(p.alpukat/2))+" pcs</b> · Olive oil <b>"+Math.max(1,p.minyakZaitun)+" tbsp</b>" },
+            { label: "🧀 Extra Fats", val: "Egg yolks <b>"+Math.max(1,p.kuningTelur)+"</b> · Cheese <b>"+Math.max(1,p.keju)+" slices</b>" },
+            { label: "🥦 Vegetables", val: "Minimum <b>"+p.sayur+" servings</b>/day" },
+            { label: "🍎 Fruits", val: "<b>"+p.buah+" servings</b>/day" },
+            { label: "💧 Water", val: "<b>"+((berat*35)/1000).toFixed(1)+" liters</b>/day" }
+        ];
+    }
+
+    function generateWorkoutPlan(bmi) {
+        if (bmi < 18.5) return [
+            { label: "Warm Up", val: "Jumping Jacks 3 mins" },
+            { label: "Push Ups", val: "3 Sets x 8-10 Reps" },
+            { label: "Bodyweight Squats", val: "3 Sets x 12 Reps" },
+            { label: "Sit Ups", val: "3 Sets x 15 Reps" },
+            { label: "Plank Hold", val: "3 Sets x 30 sec" }
+        ];
+        if (bmi >= 25) return [
+            { label: "Jogging", val: "20-30 Mins" },
+            { label: "Knee Push Ups", val: "3 Sets x 10 Reps" },
+            { label: "Bicycle Crunches", val: "3 Sets x 20 Reps" },
+            { label: "Low-impact Burpees", val: "3 Sets x 8 Reps" },
+            { label: "Cool Down", val: "5 mins walk" }
+        ];
+        return [
+            { label: "Light Jogging", val: "15 Mins" },
+            { label: "Push Ups", val: "4 Sets x 12-15 Reps" },
+            { label: "Lunges", val: "3 Sets x 10 Reps (per leg)" },
+            { label: "Sit Ups", val: "4 Sets x 20 Reps" },
+            { label: "Plank Hold", val: "3 Sets x 45 sec" }
+        ];
+    }
+
+    function handleCalculate() {
+        var w = parseFloat(document.getElementById('inp-weight').value);
+        var h = parseFloat(document.getElementById('inp-height').value);
+        var a = parseFloat(document.getElementById('inp-age').value);
+        var gender = document.getElementById('inp-gender').value;
+        var activity = parseFloat(document.getElementById('inp-activity').value);
+
+        if (!w || !h || !a) {
+            alert('Please fill in weight, height, and age!');
+            return;
         }
 
-        function generateNutrition(pro, fat, car, lang) {
-            if(lang === 'id') {
-                return [
-                    { label: "Sumber Protein (Tinggi)", val: "Dada ayam (rebus/panggang), Putih Telur, Ikan Tuna, Tempe/Tahu rebus." },
-                    { label: "Karbohidrat Kompleks", val: "Nasi merah, Oatmeal, Kentang rebus, Ubi jalar, Roti gandum utuh." },
-                    { label: "Lemak Sehat", val: "Alpukat, Minyak Zaitun (Olive Oil), Kacang almond, Kuning telur (dibatasi)." },
-                    { label: "Vitamin & Serat", val: "Brokoli, Bayam, Pisang, Apel. Minimal 2 porsi sayur per hari." }
-                ];
-            } else {
-                return [
-                    { label: "High Protein Sources", val: "Chicken breast (grilled), Egg whites, Tuna, Boiled Tempeh/Tofu." },
-                    { label: "Complex Carbs", val: "Brown rice, Oatmeal, Boiled potatoes, Sweet potatoes, Whole wheat bread." },
-                    { label: "Healthy Fats", val: "Avocados, Olive Oil, Almonds, Egg yolks (in moderation)." },
-                    { label: "Vitamins & Fiber", val: "Broccoli, Spinach, Bananas, Apples. Min. 2 servings of greens daily." }
-                ];
+        var hMeter = h / 100;
+        var bmi = w / (hMeter * hMeter);
+        var bmr = (gender === 'male') ? (10*w)+(6.25*h)-(5*a)+5 : (10*w)+(6.25*h)-(5*a)-161;
+        var tdee = bmr * activity;
+        var pro = (tdee*0.30)/4, fat = (tdee*0.25)/9, car = (tdee*0.45)/4, water = (w*35)/1000;
+        var bbiData = hitungBBI(h, gender);
+
+        document.getElementById('out-tdee').innerText = Math.round(tdee);
+        document.getElementById('out-cut').innerText = Math.round(tdee-500) + ' kcal';
+        document.getElementById('out-maint').innerText = Math.round(tdee) + ' kcal';
+        document.getElementById('out-bulk').innerText = Math.round(tdee+300) + ' kcal';
+        document.getElementById('out-pro').innerText = Math.round(pro) + 'g';
+        document.getElementById('out-fat').innerText = Math.round(fat) + 'g';
+        document.getElementById('out-car').innerText = Math.round(car) + 'g';
+        document.getElementById('out-water').innerText = water.toFixed(1);
+        document.getElementById('out-bbi').innerText = bbiData.bbi.toFixed(1);
+        document.getElementById('out-bbi-range').innerText = bbiData.min.toFixed(1) + ' - ' + bbiData.max.toFixed(1);
+
+        var status, color;
+        if (w < bbiData.min) { status = 'Underweight'; color = 'bg-info text-white'; }
+        else if (w > bbiData.max) { status = 'Overweight'; color = 'bg-danger text-white'; }
+        else { status = 'Ideal'; color = 'bg-success text-white'; }
+
+        var selisih = (w - bbiData.bbi).toFixed(1);
+        var statusEl = document.getElementById('out-bbi-status');
+        statusEl.className = 'badge rounded-pill px-3 py-2 ' + color;
+        statusEl.innerText = status + ' (' + (selisih>=0?'+':'') + selisih + ' kg from IBW)';
+
+        var nutri = generateNutrition(pro, fat, car, w);
+        document.getElementById('out-nutrition').innerHTML = nutri.map(function(i){
+            return '<li><span class="result-label text-success">' + i.label + '</span><span class="result-val font-mono">' + i.val + '</span></li>';
+        }).join('');
+
+        var workout = generateWorkoutPlan(bmi);
+        document.getElementById('out-workout').innerHTML = workout.map(function(i){
+            return '<li><span class="result-label text-brand">' + i.label + '</span><span class="result-val font-mono fw-bold">' + i.val + '</span></li>';
+        }).join('');
+
+        saveRecord(w, h, Math.round(tdee), water.toFixed(1), bbiData.bbi);
+        navTo('results');
+    }
+
+    /* ============ HISTORY ============ */
+    function saveRecord(w, h, tdee, water, bbi) {
+        var storageKey = 'getpace_history_v2_' + currentUser;
+        var rec = {
+            id: Date.now().toString(),
+            timestamp: new Date().toISOString(),
+            w: w, h: h, tdee: tdee, water: water, bbi: bbi
+        };
+        historyData.unshift(rec);
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(historyData));
+        } catch (e) {
+            console.error('Gagal menyimpan history:', e);
+        }
+        renderHistory();
+    }
+
+    function deleteRecord(id) {
+        historyData = historyData.filter(function(i){ return i.id !== id; });
+        localStorage.setItem('getpace_history_v2_' + currentUser, JSON.stringify(historyData));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        var container = document.getElementById('history-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (historyData.length === 0) {
+            container.innerHTML = '<div class="text-center mt-5 small" style="color:var(--text-muted);">No data yet. Calculate to save.</div>';
+            return;
+        }
+        historyData.forEach(function(item) {
+            var d = new Date(item.timestamp);
+            var dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            var card = document.createElement('div');
+            card.className = 'ios-glass p-3 d-flex justify-content-between align-items-center';
+            card.innerHTML = '<div>' +
+                '<div class="small mb-1" style="color:var(--text-muted); font-size:0.75rem;">' + dateStr + '</div>' +
+                '<div class="fs-4 fw-bold text-brand font-mono">' + item.tdee + ' <span class="fs-6">kcal</span></div>' +
+                '<div class="small" style="color:var(--text-muted);">' + item.w + 'kg · IBW ' + (item.bbi ? item.bbi.toFixed(1) : '-') + 'kg · ' + item.water + 'L</div>' +
+            '</div>' +
+            '<button class="btn btn-sm btn-outline-danger border-0 rounded-circle" data-del="' + item.id + '">🗑️</button>';
+            container.appendChild(card);
+        });
+    }
+
+    function renderAdminPanel() {
+        if (!currentUserData || currentUserData.role !== 'admin') return;
+        var totalUsers = 0, totalRecords = 0, activeUsers = 0;
+        Object.keys(USERS).forEach(function(uname) {
+            if (USERS[uname].role === 'user') totalUsers++;
+            var stored = localStorage.getItem('getpace_history_v2_' + uname);
+            if (stored) {
+                var arr = JSON.parse(stored);
+                if (arr.length > 0) { activeUsers++; totalRecords += arr.length; }
             }
+        });
+        document.getElementById('stat-total-users').innerText = totalUsers;
+        document.getElementById('stat-total-records').innerText = totalRecords;
+        document.getElementById('stat-active-users').innerText = activeUsers;
+
+        var container = document.getElementById('admin-user-list');
+        container.innerHTML = '';
+        Object.keys(USERS).forEach(function(uname) {
+            var u = USERS[uname];
+            var isAdm = u.role === 'admin';
+            var stored = localStorage.getItem('getpace_history_v2_' + uname);
+            var records = stored ? JSON.parse(stored) : [];
+            var initials = u.name.split(' ').map(function(n){ return n[0]; }).join('').substring(0,2).toUpperCase();
+            var card = document.createElement('div');
+            card.className = 'p-3 rounded-4 d-flex align-items-center gap-3';
+            card.style.background = 'rgba(150,150,150,0.08)';
+            card.innerHTML = '<div class="user-avatar ' + (isAdm ? 'admin-avatar' : '') + '">' + initials + '</div>' +
+                '<div class="flex-grow-1"><div class="fw-bold small">' + u.name + (isAdm ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
+                '<div class="small font-mono" style="color:var(--text-muted);">@' + uname + '</div></div>' +
+                '<div class="text-end small"><div class="fw-bold text-brand">' + records.length + ' calc</div></div>';
+            container.appendChild(card);
+        });
+    }
+
+    /* ============================================================ */
+    /* EVENT LISTENERS */
+    /* ============================================================ */
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        var id = t.id;
+
+        if (id === 'btnLogin' || (t.closest && t.closest('#btnLogin'))) { tryLogin(); return; }
+        if (id === 'btnCalculate' || (t.closest && t.closest('#btnCalculate'))) { handleCalculate(); return; }
+        if (id === 'btnLogout' || (t.closest && t.closest('#btnLogout'))) { handleLogout(); return; }
+        if (t.closest && t.closest('[data-action="logout"]')) { handleLogout(); return; }
+
+        var genderBtn = t.closest && t.closest('.gender-btn');
+        if (genderBtn) {
+            document.querySelectorAll('.gender-btn').forEach(function(b){ b.classList.remove('selected'); });
+            genderBtn.classList.add('selected');
+            document.getElementById('inp-gender').value = genderBtn.dataset.val;
+            return;
         }
 
-        function generateWorkoutPlan(bmi, activity, lang) {
-            let plan = [];
-            
-            if (bmi < 18.5) {
-                // Underweight: Focus on building strength
-                if(lang === 'id') {
-                    plan = [
-                        { label: "Pemanasan", val: "Jumping Jacks 3 menit" },
-                        { label: "Push Up (Biasa/Lutut)", val: "3 Set x 8-10 Repetisi" },
-                        { label: "Bodyweight Squat", val: "3 Set x 12 Repetisi" },
-                        { label: "Sit Up / Crunch", val: "3 Set x 15 Repetisi" },
-                        { label: "Plank", val: "3 Set x 30 Detik" }
-                    ];
-                } else {
-                    plan = [
-                        { label: "Warm Up", val: "Jumping Jacks 3 mins" },
-                        { label: "Push Ups (Standard/Knee)", val: "3 Sets x 8-10 Reps" },
-                        { label: "Bodyweight Squats", val: "3 Sets x 12 Reps" },
-                        { label: "Sit Ups / Crunches", val: "3 Sets x 15 Reps" },
-                        { label: "Plank Hold", val: "3 Sets x 30 Seconds" }
-                    ];
-                }
-            } else if (bmi >= 25) {
-                // Overweight: Focus on cardio & core
-                if(lang === 'id') {
-                    plan = [
-                        { label: "Jogging / Jalan Cepat", val: "20-30 Menit Non-stop" },
-                        { label: "Knee Push Up", val: "3 Set x 10 Repetisi" },
-                        { label: "Bicycle Crunches", val: "3 Set x 20 Repetisi" },
-                        { label: "Burpees (Tanpa Lompat)", val: "3 Set x 8 Repetisi" },
-                        { label: "Pendinginan", val: "Jalan santai 5 menit" }
-                    ];
-                } else {
-                    plan = [
-                        { label: "Jogging / Brisk Walk", val: "20-30 Mins Non-stop" },
-                        { label: "Knee Push Ups", val: "3 Sets x 10 Reps" },
-                        { label: "Bicycle Crunches", val: "3 Sets x 20 Reps" },
-                        { label: "Low-impact Burpees", val: "3 Sets x 8 Reps" },
-                        { label: "Cool Down", val: "5 mins light walk" }
-                    ];
-                }
-            } else {
-                // Normal
-                if(lang === 'id') {
-                    plan = [
-                        { label: "Jogging Ringan", val: "15 Menit" },
-                        { label: "Standard Push Up", val: "4 Set x 12-15 Repetisi" },
-                        { label: "Lunges", val: "3 Set x 10 Repetisi (per kaki)" },
-                        { label: "Sit Up", val: "4 Set x 20 Repetisi" },
-                        { label: "Plank", val: "3 Set x 45 Detik" }
-                    ];
-                } else {
-                    plan = [
-                        { label: "Light Jogging", val: "15 Minutes" },
-                        { label: "Standard Push Ups", val: "4 Sets x 12-15 Reps" },
-                        { label: "Lunges", val: "3 Sets x 10 Reps (per leg)" },
-                        { label: "Sit Ups", val: "4 Sets x 20 Reps" },
-                        { label: "Plank Hold", val: "3 Sets x 45 Seconds" }
-                    ];
-                }
-            }
+        var navEl = t.closest && t.closest('[data-nav]');
+        if (navEl) { navTo(navEl.dataset.nav); return; }
 
-            if(activity >= 1.55) {
-                const note = lang === 'id' ? "*Tingkat aktivitas tinggi: Tambahkan beban (dumbbell) pada latihan." : "*High activity level: Add dumbbells to your routine.";
-                plan.push({ label: `<em class="text-brand">${note}</em>`, val: "" });
-            }
+        var dnavBtn = t.closest && t.closest('.dnav-btn');
+        if (dnavBtn && dnavBtn.dataset.view) { navTo(dnavBtn.dataset.view); return; }
 
-            return plan;
+        var delBtn = t.closest && t.closest('[data-del]');
+        if (delBtn) { deleteRecord(delBtn.dataset.del); return; }
+    });
+
+    document.addEventListener('change', function(e) {
+        if (e.target.id === 'themeSwitch') {
+            toggleTheme(e.target.checked);
         }
+    });
 
-        function handleCalculate(e) {
-            e.preventDefault();
-            document.getElementById('loader-overlay').style.display = 'flex';
-            
-            const w = parseFloat(document.getElementById('inp-weight').value);
-            const h = parseFloat(document.getElementById('inp-height').value);
-            const a = parseFloat(document.getElementById('inp-age').value);
-            const gender = document.getElementById('inp-gender').value;
-            const activity = parseFloat(document.getElementById('inp-activity').value);
-
-            // Calculate BMI
-            const hMeter = h / 100;
-            const bmi = w / (hMeter * hMeter);
-
-            // Calculate BMR & TDEE
-            let bmr = (gender === 'male') ? (10 * w) + (6.25 * h) - (5 * a) + 5 : (10 * w) + (6.25 * h) - (5 * a) - 161;
-            const tdee = bmr * activity;
-
-            // Macros
-            const pro = (tdee * 0.3) / 4;
-            const fat = (tdee * 0.25) / 9;
-            const car = (tdee * 0.45) / 4;
-            const water = (w * 35) / 1000;
-
-            setTimeout(() => {
-                // Populate Macros & Hydration
-                document.getElementById('out-tdee').innerText = Math.round(tdee);
-                document.getElementById('out-pro').innerText = Math.round(pro) + 'g';
-                document.getElementById('out-fat').innerText = Math.round(fat) + 'g';
-                document.getElementById('out-car').innerText = Math.round(car) + 'g';
-                document.getElementById('out-water').innerText = water.toFixed(1);
-                
-                // Populate Nutrition
-                const nutriPlan = generateNutrition(pro, fat, car, currentLang);
-                document.getElementById('out-nutrition').innerHTML = nutriPlan.map(item => `
-                    <li>
-                        <span class="result-label text-success">${item.label}</span>
-                        <span class="result-val font-mono">${item.val}</span>
-                    </li>
-                `).join('');
-
-                // Populate Workout
-                const workoutPlan = generateWorkoutPlan(bmi, activity, currentLang);
-                document.getElementById('out-workout').innerHTML = workoutPlan.map(item => `
-                    <li>
-                        <span class="result-label text-brand">${item.label}</span>
-                        <span class="result-val font-mono fw-bold">${item.val}</span>
-                    </li>
-                `).join('');
-
-                document.getElementById('loader-overlay').style.display = 'none';
-                navTo('results');
-
-                saveRecord(w, h, Math.round(tdee), water.toFixed(1));
-            }, 800);
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && (e.target.id === 'login-username' || e.target.id === 'login-password')) {
+            tryLogin();
         }
+    });
 
-        function saveRecord(w, h, tdee, water) {
-            const id = Date.now().toString();
-            const record = { id, timestamp: new Date().toISOString(), w, h, tdee, water };
-            historyData.unshift(record); // Add to beginning
-            localStorage.setItem('getpace_history_v4', JSON.stringify(historyData));
-            renderHistory();
-        }
-
-        function deleteRecord(id) {
-            historyData = historyData.filter(item => item.id !== id);
-            localStorage.setItem('getpace_history_v4', JSON.stringify(historyData));
-            renderHistory();
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('history-container');
-            container.innerHTML = '';
-            
-            if(historyData.length === 0) {
-                container.innerHTML = `<div class="text-center mt-5 opacity-50 small t-no-data">${dict[currentLang].noData}</div>`;
-                return;
-            }
-
-            historyData.forEach(item => {
-                const d = new Date(item.timestamp);
-                const dateStr = d.toLocaleDateString(currentLang === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                
-                const card = document.createElement('div');
-                card.className = "ios-glass p-3 d-flex justify-content-between align-items-center shadow-sm";
-                card.innerHTML = `
-                    <div>
-                        <div class="small opacity-50 mb-1 font-mono" style="font-size:0.75rem;"><i class="fa-regular fa-calendar me-1"></i> ${dateStr}</div>
-                        <div class="fs-4 fw-bold text-brand font-mono lh-1 mb-1">${item.tdee} <span class="fs-6 text-body opacity-75">kcal</span></div>
-                        <div class="small opacity-75 fw-medium d-flex gap-3">
-                            <span><i class="fa-solid fa-weight-scale text-secondary mx-1"></i> ${item.w}kg</span>
-                            <span><i class="fa-solid fa-droplet text-primary mx-1"></i> ${item.water}L</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" style="width:40px; height:40px; background: rgba(220,53,69,0.15);" onclick="deleteRecord('${item.id}')">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                container.appendChild(card);
-            });
-        }
+    /* ============================================================ */
+    /* INIT */
+    /* ============================================================ */
+    (function init() {
+        var savedTheme = localStorage.getItem('getpace_theme_v2') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        var ts = document.getElementById('themeSwitch');
+        if (ts) ts.checked = (savedTheme === 'dark');
+        updateLogos();
+    })();
     </script>
 </body>
 </html>
