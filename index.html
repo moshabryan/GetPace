@@ -41,12 +41,10 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .ambient-blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; }
-        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(242,213,57,0.5); }
-        .blob-2 { bottom: 5%; right: -15%; width: 450px; height: 450px; background: rgba(150,180,255,0.35); }
-        .blob-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: rgba(255,150,180,0.2); }
-        [data-bs-theme="dark"] .blob-1 { background: rgba(242,213,57,0.18); }
-        [data-bs-theme="dark"] .blob-2 { background: rgba(80,100,180,0.25); }
-        [data-bs-theme="dark"] .blob-3 { background: rgba(180,80,120,0.15); }
+        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(242,213,57,0.4); }
+        .blob-2 { bottom: 5%; right: -15%; width: 450px; height: 450px; background: rgba(150,180,255,0.3); }
+        [data-bs-theme="dark"] .blob-1 { background: rgba(242,213,57,0.15); }
+        [data-bs-theme="dark"] .blob-2 { background: rgba(80,100,180,0.2); }
 
         .font-mono { font-family: 'Roboto Mono', monospace; }
         .text-brand { color: #b89c0e; }
@@ -76,20 +74,195 @@
             box-shadow: 0 0 0 4px rgba(242,213,57,0.25);
         }
 
+        /* ============================================ */
+        /* ===== LANDING PAGE ===== */
+        /* ============================================ */
+        #landing-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.35), transparent 55%),
+                        radial-gradient(ellipse at bottom right, rgba(150,180,255,0.3), transparent 55%),
+                        var(--bg-base);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        [data-bs-theme="dark"] #landing-screen {
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.12), transparent 55%),
+                        radial-gradient(ellipse at bottom right, rgba(80,100,180,0.18), transparent 55%),
+                        var(--bg-base);
+        }
+        #landing-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.03);
+            pointer-events: none;
+        }
+        .landing-wrap {
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+        }
+        .landing-logo {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--brand-yellow);
+            box-shadow: 0 12px 40px rgba(242,213,57,0.4), 0 6px 20px rgba(0,0,0,0.15);
+            background: #F2D539;
+            display: block;
+            margin: 0 auto 1.75rem;
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+        [data-bs-theme="dark"] .landing-logo { background: #1a1a1a; }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .landing-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+        .landing-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 2.25rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--brand-yellow);
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(242,213,57,0.5);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .landing-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(242,213,57,0.7);
+        }
+        .landing-cta:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================ */
+        /* ===== LOGIN SCREEN ===== */
+        /* ============================================ */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.3), transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(150,180,255,0.3), transparent 50%),
+                        var(--bg-base);
+        }
+        [data-bs-theme="dark"] #login-screen {
+            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.12), transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(80,100,180,0.18), transparent 50%),
+                        var(--bg-base);
+        }
+        body.logged-in #login-screen { display: none !important; }
+        .login-card { width: 100%; max-width: 420px; padding: 2rem; }
+
+        .logo-img {
+            width: 44px; height: 44px; object-fit: cover;
+            border-radius: 50%; flex-shrink: 0;
+            border: 2px solid rgba(242, 213, 57, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s; background: #F2D539;
+        }
+        [data-bs-theme="dark"] .logo-img { border-color: rgba(242, 213, 57, 0.7); background: #1a1a1a; }
+        .logo-img-large {
+            width: 100px; height: 100px; object-fit: cover;
+            border-radius: 50%; border: 3px solid rgba(242, 213, 57, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 1rem; display: block; background: #F2D539;
+        }
+        [data-bs-theme="dark"] .logo-img-large { border-color: rgba(242, 213, 57, 0.7); background: #1a1a1a; }
+
+        /* Order info box */
+        .order-info {
+            margin-top: 1.25rem;
+            padding: 1rem 1.1rem;
+            border-radius: 1rem;
+            background: rgba(242,213,57,0.12);
+            border: 1.5px dashed rgba(242,213,57,0.6);
+            text-align: center;
+        }
+        .order-info .oi-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .order-info .oi-desc {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        .btn-order {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 0.9rem;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            text-decoration: none;
+        }
+        .btn-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(37,211,102,0.6);
+            color: #fff;
+        }
+        .btn-order:active { transform: translateY(0); }
+
+        /* ============================================ */
+        /* ===== APP STYLES ===== */
+        /* ============================================ */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 20px; right: 20px;
-            z-index: 100; padding: 0.75rem 1.5rem;
+            z-index: 100; padding: 0.75rem 1rem;
             border-radius: 2rem; display: flex; justify-content: space-between;
         }
         .nav-item-custom {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--text-main); opacity: 0.45; cursor: pointer; width: 30%;
+            color: var(--text-main); opacity: 0.45; cursor: pointer; flex: 1;
             transition: all 0.3s;
         }
         .nav-item-custom.active { opacity: 1; color: #b89c0e; transform: translateY(-3px); }
         [data-bs-theme="dark"] .nav-item-custom.active { color: var(--brand-yellow); }
-        .nav-item-custom i { font-size: 1.4rem; margin-bottom: 4px; }
-        .nav-item-custom span { font-size: 0.7rem; font-weight: 600; }
+        .nav-item-custom i { font-size: 1.3rem; margin-bottom: 3px; }
+        .nav-item-custom span { font-size: 0.65rem; font-weight: 600; }
 
         .view-section { display: none; animation: popIn 0.4s; }
         .view-section.active { display: block; }
@@ -112,45 +285,6 @@
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 0.5rem auto; font-size: 1.2rem;
         }
-        .result-list { list-style: none; padding: 0; margin: 0; }
-        .result-list li {
-            padding: 0.85rem 0;
-            border-bottom: 1px solid rgba(150,150,150,0.15);
-            display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;
-        }
-        .result-list li:last-child { border-bottom: none; }
-        .result-label { font-weight: 600; font-size: 0.9rem; }
-        .result-val { font-size: 0.85rem; opacity: 0.85; text-align: right; max-width: 60%; }
-
-        .logo-img {
-            width: 44px; height: 44px; object-fit: cover;
-            border-radius: 50%; flex-shrink: 0;
-            border: 2px solid rgba(242, 213, 57, 0.6);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s; background: #F2D539;
-        }
-        [data-bs-theme="dark"] .logo-img { border-color: rgba(242, 213, 57, 0.7); background: #1a1a1a; }
-        .logo-img-large {
-            width: 110px; height: 110px; object-fit: cover;
-            border-radius: 50%; border: 3px solid rgba(242, 213, 57, 0.6);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin: 0 auto 1rem; display: block; background: #F2D539;
-        }
-        [data-bs-theme="dark"] .logo-img-large { border-color: rgba(242, 213, 57, 0.7); background: #1a1a1a; }
-
-        #login-screen {
-            min-height: 100vh; display: flex; justify-content: center; align-items: center;
-            padding: 1rem;
-            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.35), transparent 50%),
-                        radial-gradient(ellipse at bottom right, rgba(150,180,255,0.35), transparent 50%),
-                        var(--bg-base);
-        }
-        [data-bs-theme="dark"] #login-screen {
-            background: radial-gradient(ellipse at top left, rgba(242,213,57,0.15), transparent 50%),
-                        radial-gradient(ellipse at bottom right, rgba(80,100,180,0.2), transparent 50%),
-                        var(--bg-base);
-        }
-        .login-card { width: 100%; max-width: 420px; padding: 2rem; }
 
         #app-wrapper { display: none; }
         #app-wrapper.show { display: block; }
@@ -191,8 +325,83 @@
         .tdee-unit { font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 1.75rem; }
         .tdee-row { margin-top: auto; }
 
-        .results-grid {
-            display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: stretch;
+        .results-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: stretch; }
+
+        .quiz-question { margin-bottom: 1.5rem; }
+        .quiz-question:last-child { margin-bottom: 0; }
+        .quiz-question h6 {
+            font-weight: 600; font-size: 0.95rem; margin-bottom: 0.75rem;
+            display: flex; align-items: flex-start; gap: 0.5rem;
+        }
+        .quiz-num {
+            background: var(--brand-yellow); color: #000;
+            border-radius: 50%; width: 24px; height: 24px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+        }
+        .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .quiz-option {
+            padding: 0.75rem 0.9rem;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 0.9rem; cursor: pointer;
+            font-size: 0.82rem; font-weight: 500;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .quiz-option:hover { border-color: rgba(242,213,57,0.6); background: rgba(242,213,57,0.08); }
+        .quiz-option.selected {
+            background: rgba(242,213,57,0.22);
+            border-color: var(--brand-yellow);
+            font-weight: 700;
+        }
+        .quiz-option .opt-dot {
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 2px solid rgba(150,150,150,0.5);
+            flex-shrink: 0; transition: all 0.2s;
+        }
+        .quiz-option.selected .opt-dot {
+            border-color: var(--brand-yellow);
+            background: var(--brand-yellow);
+            box-shadow: inset 0 0 0 3px var(--bg-base);
+        }
+        .quiz-progress { display: flex; gap: 3px; margin-bottom: 1.5rem; }
+        .quiz-progress .dot {
+            flex: 1; height: 4px; border-radius: 3px;
+            background: rgba(150,150,150,0.2);
+            transition: background 0.3s;
+        }
+        .quiz-progress .dot.done { background: var(--brand-yellow); }
+
+        .rec-section { margin-bottom: 1.25rem; }
+        .rec-section:last-child { margin-bottom: 0; }
+        .rec-section h6 {
+            font-weight: 700; display: flex; align-items: center;
+            gap: 0.5rem; margin-bottom: 0.75rem; font-size: 1rem;
+        }
+        .rec-item {
+            padding: 0.9rem 1rem; border-radius: 1rem;
+            background: rgba(150,150,150,0.08);
+            margin-bottom: 0.5rem;
+            border-left: 4px solid var(--brand-yellow);
+        }
+        .rec-item:last-child { margin-bottom: 0; }
+        .rec-item .rec-label { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem; }
+        .rec-item .rec-text { font-size: 0.82rem; line-height: 1.5; opacity: 0.85; }
+        .score-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 1rem; border-radius: 999px;
+            font-weight: 700; font-size: 0.85rem;
+        }
+        .score-good { background: rgba(25,135,84,0.18); color: #198754; }
+        .score-ok { background: rgba(255,193,7,0.22); color: #b89c0e; }
+        .score-bad { background: rgba(220,53,69,0.15); color: #dc3545; }
+
+        .lock-icon {
+            width: 100px; height: 100px; border-radius: 50%;
+            background: rgba(242,213,57,0.2);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem;
         }
 
         @media (min-width: 992px) {
@@ -213,16 +422,41 @@
                 grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
                 gap: 1rem !important;
             }
+            .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         }
         @media (max-width: 991.98px) {
             .desktop-nav { display: none !important; }
             .tdee-number { font-size: 3rem; }
+            .landing-title { font-size: 2.25rem; }
+            .landing-logo { width: 110px; height: 110px; }
+        }
+        @media (max-width: 400px) {
+            .quiz-options { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
+    <!-- ============================================ -->
+    <!-- ===== LANDING PAGE ===== -->
+    <!-- ============================================ -->
+    <div id="landing-screen">
+        <div class="landing-wrap">
+            <img id="landing-logo" class="landing-logo" alt="GetPace Logo">
+            <h1 class="landing-title">GetPace</h1>
+            <p class="landing-subtitle">Your Smart Fitness & Nutrition Planner</p>
+
+            <button class="landing-cta" onclick="enterApp()">
+                <span>Get Started</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ===== LOGIN SCREEN ===== -->
+    <!-- ============================================ -->
+    <div id="login-screen" style="display:none;">
         <div class="login-card ios-glass">
             <img id="login-logo" class="logo-img-large" alt="GetPace Logo">
             <h2 class="h3 fw-bold text-center mb-1">GetPace</h2>
@@ -247,7 +481,6 @@
                 <div id="login-error" class="alert alert-danger py-2 small mb-0" style="display:none;">
                     <span id="login-error-msg">Error</span>
                 </div>
-
                 <div id="login-info" class="alert alert-info py-2 small mb-0" style="display:none;">
                     <span id="login-info-msg">Info</span>
                 </div>
@@ -258,19 +491,31 @@
                     <i class="fa-solid fa-right-to-bracket"></i> SIGN IN
                 </button>
 
-                <button type="button" id="btnSeed"
-                        style="background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.8rem;
-                               border: 1px solid var(--glass-border); border-radius: 1rem; padding: 0.6rem; cursor: pointer;">
-                    <i class="fa-solid fa-database"></i> Initialize Users (first time only)
-                </button>
+                <!-- ORDER INFO -->
+                <div class="order-info">
+                    <div class="oi-title">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Don't have an account yet?</span>
+                    </div>
+                    <div class="oi-desc">
+                        To get an account, please order first via WhatsApp.
+                        Our admin will send your username & password.
+                    </div>
+                    <a href="#" onclick="openWhatsApp(event)" class="btn-order">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.15rem;"></i>
+                        <span>Order via WhatsApp</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- ===== APP ===== -->
+    <!-- ============================================ -->
     <div id="app-wrapper">
         <div class="ambient-blob blob-1"></div>
         <div class="ambient-blob blob-2"></div>
-        <div class="ambient-blob blob-3"></div>
 
         <header class="ios-glass m-3 p-3 sticky-top" style="z-index: 50;">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -280,6 +525,7 @@
                 </div>
                 <nav class="desktop-nav">
                     <button class="dnav-btn active" data-view="home">Home</button>
+                    <button class="dnav-btn" data-view="daily">Daily Check</button>
                     <button class="dnav-btn" data-view="history">History</button>
                     <button class="dnav-btn" data-view="admin" id="adminNavBtn" style="display:none;">Admin</button>
                     <button class="dnav-btn" data-view="settings">Settings</button>
@@ -302,6 +548,7 @@
         </header>
 
         <main class="container px-3 pb-5">
+            <!-- HOME -->
             <section id="view-home" class="view-section active">
                 <div class="home-wrapper">
                     <div class="mb-4 px-2">
@@ -348,15 +595,16 @@
                         <button type="button" id="btnCalculate"
                                 style="background: #F2D539; color: #000; font-weight: 700; border: none;
                                        border-radius: 1rem; padding: 1rem; cursor: pointer; margin-top: 0.5rem;">
-                            <i class="fa-solid fa-calculator"></i> CALCULATE & SAVE
+                            <i class="fa-solid fa-calculator"></i> CALCULATE
                         </button>
                     </div>
                 </div>
             </section>
 
+            <!-- RESULTS -->
             <section id="view-results" class="view-section">
                 <div class="d-flex justify-content-between align-items-center mb-4 px-2">
-                    <h2 class="h3 fw-bold mb-0">Analysis Result</h2>
+                    <h2 class="h3 fw-bold mb-0">Your Targets</h2>
                     <button class="btn btn-sm ios-glass border-0" data-nav="home">
                         <i class="fa-solid fa-arrow-left me-1"></i> Back
                     </button>
@@ -451,46 +699,226 @@
                     </div>
                 </div>
 
-                <div class="row g-3 mt-4">
-                    <div class="col-12 col-lg-6">
-                        <div class="ios-glass p-4 h-100">
-                            <h6 class="fw-bold mb-3">
-                                <i class="fa-solid fa-utensils text-success me-2"></i> Detailed Nutrition Guide
-                            </h6>
-                            <ul id="out-nutrition" class="result-list"></ul>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <div class="ios-glass p-4 h-100">
-                            <h6 class="fw-bold mb-3">
-                                <i class="fa-solid fa-dumbbell text-brand me-2"></i> Workout Plan
-                            </h6>
-                            <ul id="out-workout" class="result-list"></ul>
-                        </div>
-                    </div>
+                <div class="ios-glass p-4 mt-4 text-center" style="background: linear-gradient(135deg, rgba(242,213,57,0.25), rgba(242,213,57,0.08)); border: 2px dashed rgba(242,213,57,0.5) !important;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🍽️💪</div>
+                    <h5 class="fw-bold mb-2">Want meal & workout advice?</h5>
+                    <p class="small mb-3" style="color: var(--text-muted);">
+                        Do the Daily Check to get personalized recommendations!
+                    </p>
+                    <button type="button" onclick="window.goDaily()"
+                            style="background: #F2D539; color: #000; font-weight: 700; border: none;
+                                   border-radius: 1rem; padding: 0.9rem 2rem; cursor: pointer;">
+                        <i class="fa-solid fa-clipboard-check me-2"></i> Open Daily Check
+                    </button>
                 </div>
             </section>
 
+            <!-- DAILY CHECK -->
+            <section id="view-daily" class="view-section">
+                <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                    <h2 class="h3 fw-bold mb-0">
+                        <i class="fa-solid fa-clipboard-check text-brand me-2"></i>Daily Check
+                    </h2>
+                </div>
+
+                <div id="daily-locked" class="ios-glass p-4 text-center">
+                    <div class="lock-icon">
+                        <i class="fa-solid fa-lock" style="font-size: 2.5rem; color: #b89c0e;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Feature Locked</h5>
+                    <p class="small mb-4" style="color: var(--text-muted);">
+                        To get personalized meal & workout advice, please calculate your targets on the Home page first.
+                    </p>
+                    <button type="button" data-nav="home"
+                            style="background: #F2D539; color: #000; font-weight: 700; border: none;
+                                   border-radius: 1rem; padding: 0.9rem 2rem; cursor: pointer;">
+                        <i class="fa-solid fa-calculator me-2"></i> Calculate on Home
+                    </button>
+                </div>
+
+                <div id="daily-quiz" class="ios-glass p-4" style="display:none;">
+                    <div class="mb-3">
+                        <h6 class="fw-bold mb-1">Daily Check-In</h6>
+                        <p class="small mb-0" style="color: var(--text-muted);">
+                            Answer 10 quick questions to get personalized advice for tomorrow.
+                        </p>
+                    </div>
+
+                    <div class="quiz-progress" id="quiz-progress">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">1</span> How many meals did you eat today?</h6>
+                        <div class="quiz-options" data-name="meals">
+                            <div class="quiz-option" data-val="1"><div class="opt-dot"></div>1x</div>
+                            <div class="quiz-option" data-val="2"><div class="opt-dot"></div>2x</div>
+                            <div class="quiz-option" data-val="3"><div class="opt-dot"></div>3x</div>
+                            <div class="quiz-option" data-val="4"><div class="opt-dot"></div>&gt;3x</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">2</span> What food was most dominant today?</h6>
+                        <div class="quiz-options" data-name="food">
+                            <div class="quiz-option" data-val="carbs"><div class="opt-dot"></div>🍚 Carbs (rice, noodles)</div>
+                            <div class="quiz-option" data-val="protein"><div class="opt-dot"></div>🍗 Protein (chicken, eggs)</div>
+                            <div class="quiz-option" data-val="veggies"><div class="opt-dot"></div>🥦 Veggies & fruits</div>
+                            <div class="quiz-option" data-val="junk"><div class="opt-dot"></div>🍟 Junk food</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">3</span> Did you eat vegetables & fruits?</h6>
+                        <div class="quiz-options" data-name="veggies">
+                            <div class="quiz-option" data-val="none"><div class="opt-dot"></div>None</div>
+                            <div class="quiz-option" data-val="one"><div class="opt-dot"></div>1 serving</div>
+                            <div class="quiz-option" data-val="two"><div class="opt-dot"></div>2-3 servings</div>
+                            <div class="quiz-option" data-val="many"><div class="opt-dot"></div>&gt;3 servings</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">4</span> Any fried / junk food today?</h6>
+                        <div class="quiz-options" data-name="junk">
+                            <div class="quiz-option" data-val="none"><div class="opt-dot"></div>None</div>
+                            <div class="quiz-option" data-val="once"><div class="opt-dot"></div>1x</div>
+                            <div class="quiz-option" data-val="twice"><div class="opt-dot"></div>2x</div>
+                            <div class="quiz-option" data-val="many"><div class="opt-dot"></div>&gt;2x</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">5</span> How many glasses of water?</h6>
+                        <div class="quiz-options" data-name="water">
+                            <div class="quiz-option" data-val="low"><div class="opt-dot"></div>&lt;4 glasses</div>
+                            <div class="quiz-option" data-val="medium"><div class="opt-dot"></div>4-6 glasses</div>
+                            <div class="quiz-option" data-val="good"><div class="opt-dot"></div>7-8 glasses</div>
+                            <div class="quiz-option" data-val="great"><div class="opt-dot"></div>&gt;8 glasses</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">6</span> Any sugary drinks / coffee / soda?</h6>
+                        <div class="quiz-options" data-name="sugary">
+                            <div class="quiz-option" data-val="none"><div class="opt-dot"></div>None</div>
+                            <div class="quiz-option" data-val="once"><div class="opt-dot"></div>1x</div>
+                            <div class="quiz-option" data-val="twice"><div class="opt-dot"></div>2-3x</div>
+                            <div class="quiz-option" data-val="many"><div class="opt-dot"></div>&gt;3x</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">7</span> What exercise did you do today?</h6>
+                        <div class="quiz-options" data-name="exercise">
+                            <div class="quiz-option" data-val="none"><div class="opt-dot"></div>😴 No exercise</div>
+                            <div class="quiz-option" data-val="walk"><div class="opt-dot"></div>🚶 Walking</div>
+                            <div class="quiz-option" data-val="cardio"><div class="opt-dot"></div>🏃 Cardio</div>
+                            <div class="quiz-option" data-val="gym"><div class="opt-dot"></div>🏋️ Weight lifting</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">8</span> How long did you exercise?</h6>
+                        <div class="quiz-options" data-name="duration">
+                            <div class="quiz-option" data-val="none"><div class="opt-dot"></div>None</div>
+                            <div class="quiz-option" data-val="short"><div class="opt-dot"></div>&lt;30 min</div>
+                            <div class="quiz-option" data-val="medium"><div class="opt-dot"></div>30-60 min</div>
+                            <div class="quiz-option" data-val="long"><div class="opt-dot"></div>&gt;60 min</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">9</span> How many hours did you sleep last night?</h6>
+                        <div class="quiz-options" data-name="sleep">
+                            <div class="quiz-option" data-val="low"><div class="opt-dot"></div>&lt;5 hours</div>
+                            <div class="quiz-option" data-val="medium"><div class="opt-dot"></div>5-6 hours</div>
+                            <div class="quiz-option" data-val="good"><div class="opt-dot"></div>7-8 hours</div>
+                            <div class="quiz-option" data-val="great"><div class="opt-dot"></div>&gt;8 hours</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h6><span class="quiz-num">10</span> How do you feel today?</h6>
+                        <div class="quiz-options" data-name="mood">
+                            <div class="quiz-option" data-val="tired"><div class="opt-dot"></div>😴 Tired</div>
+                            <div class="quiz-option" data-val="ok"><div class="opt-dot"></div>😐 Okay</div>
+                            <div class="quiz-option" data-val="fresh"><div class="opt-dot"></div>😊 Fresh</div>
+                            <div class="quiz-option" data-val="great"><div class="opt-dot"></div>🔥 Superb</div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btnSubmitCheck"
+                            style="background: #F2D539; color: #000; font-weight: 700; border: none;
+                                   border-radius: 1rem; padding: 1rem; cursor: pointer; width: 100%; margin-top: 1rem;">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Submit & See Recommendations
+                    </button>
+                </div>
+
+                <div id="daily-result" style="display:none;">
+                    <div class="ios-glass p-4 mb-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-0">Personal Recommendations</h5>
+                                <p class="small mb-0" style="color: var(--text-muted);" id="result-date">-</p>
+                            </div>
+                            <div id="result-score-badge" class="score-badge score-ok">
+                                <i class="fa-solid fa-star"></i> <span id="result-score">-</span>
+                            </div>
+                        </div>
+                        <p class="small mb-0" style="color: var(--text-muted);">
+                            Based on your check-in + target TDEE & IBW from calculator.
+                        </p>
+                    </div>
+
+                    <div class="rec-grid">
+                        <div class="ios-glass p-4 mb-3">
+                            <div class="rec-section">
+                                <h6><i class="fa-solid fa-utensils text-success"></i> Nutrition Advice</h6>
+                                <div id="out-personal-nutrition"></div>
+                            </div>
+                        </div>
+                        <div class="ios-glass p-4 mb-3">
+                            <div class="rec-section">
+                                <h6><i class="fa-solid fa-dumbbell text-brand"></i> Workout Advice</h6>
+                                <div id="out-personal-workout"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btnNewCheck"
+                            style="background: transparent; color: var(--text-main); font-weight: 700;
+                                   border: 2px solid var(--glass-border); border-radius: 1rem;
+                                   padding: 0.9rem; cursor: pointer; width: 100%; margin-top: 0.5rem;">
+                        <i class="fa-solid fa-rotate me-2"></i> New Check-In
+                    </button>
+                </div>
+            </section>
+
+            <!-- HISTORY -->
             <section id="view-history" class="view-section">
                 <h2 class="h3 fw-bold mb-4 px-2">Calculation History</h2>
                 <div id="history-container" class="d-flex flex-column gap-3"></div>
             </section>
 
+            <!-- ADMIN -->
             <section id="view-admin" class="view-section">
-                <h2 class="h3 fw-bold mb-4 px-2">
-                    <i class="fa-solid fa-shield-halved text-danger me-2"></i>Admin Panel
-                </h2>
+                <div class="d-flex justify-content-between align-items-center mb-4 px-2 flex-wrap gap-2">
+                    <h2 class="h3 fw-bold mb-0">
+                        <i class="fa-solid fa-shield-halved text-danger me-2"></i>Admin Recap
+                    </h2>
+                    <button type="button" id="btnRefreshAdmin" class="btn btn-sm ios-glass border-0">
+                        <i class="fa-solid fa-rotate me-1"></i> Refresh
+                    </button>
+                </div>
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
                         <div class="ios-glass admin-stat-card">
                             <div class="num" id="stat-total-users">0</div>
                             <div class="small fw-semibold" style="color: var(--text-muted);">Total Users</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="ios-glass admin-stat-card">
-                            <div class="num" id="stat-total-records">0</div>
-                            <div class="small fw-semibold" style="color: var(--text-muted);">Total Calculations</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
@@ -501,22 +929,40 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="ios-glass admin-stat-card">
-                            <div class="num">👑</div>
-                            <div class="small fw-semibold" style="color: var(--text-muted);">Admin</div>
+                            <div class="num" id="stat-total-records">0</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Total Calculations</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="ios-glass admin-stat-card">
+                            <div class="num" id="stat-avg-tdee">0</div>
+                            <div class="small fw-semibold" style="color: var(--text-muted);">Avg TDEE</div>
                         </div>
                     </div>
                 </div>
-                <div class="ios-glass p-4">
+                <div class="ios-glass p-4 mb-4">
                     <h5 class="fw-bold mb-3">
-                        <i class="fa-solid fa-users text-primary me-2"></i> User List
+                        <i class="fa-solid fa-table-list text-primary me-2"></i> Usage Recap
                     </h5>
-                    <div id="admin-user-list" class="d-flex flex-column gap-3"></div>
+                    <div class="table-responsive">
+                        <table class="table table-sm" style="font-size:0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th class="text-center">Calc</th>
+                                    <th class="text-center">Avg TDEE</th>
+                                    <th>Last Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-recap-tbody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
+            <!-- SETTINGS -->
             <section id="view-settings" class="view-section">
                 <h2 class="h3 fw-bold mb-4 px-2">Settings</h2>
-
                 <div class="ios-glass p-4 mb-3 d-flex align-items-center gap-3">
                     <div class="user-avatar" style="width:56px;height:56px;font-size:1.4rem;" id="settings-avatar">?</div>
                     <div>
@@ -524,19 +970,14 @@
                         <div class="small" style="color: var(--text-muted);" id="settings-role">User</div>
                     </div>
                 </div>
-
                 <div class="ios-glass p-4 d-flex flex-column gap-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Dark Mode</h6>
-                        </div>
+                        <div><h6 class="mb-0 fw-bold">Dark Mode</h6></div>
                         <div class="form-check form-switch fs-4 mb-0">
                             <input class="form-check-input" type="checkbox" id="themeSwitch">
                         </div>
                     </div>
-
                     <div style="height:1px; background: rgba(150,150,150,0.2);"></div>
-
                     <button type="button" class="btn btn-outline-danger rounded-4 py-3 fw-bold" id="btnLogout">
                         <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
                     </button>
@@ -545,16 +986,19 @@
         </main>
 
         <nav class="ios-glass bottom-nav">
-            <div class="nav-item-custom active" data-nav="home">
+            <div class="nav-item-custom active" data-nav="home" onclick="window.navTo('home')">
                 <i class="fa-solid fa-house"></i><span>Home</span>
             </div>
-            <div class="nav-item-custom" data-nav="history">
+            <div class="nav-item-custom" data-nav="daily" onclick="window.goDaily()">
+                <i class="fa-solid fa-clipboard-check"></i><span>Daily</span>
+            </div>
+            <div class="nav-item-custom" data-nav="history" onclick="window.navTo('history')">
                 <i class="fa-solid fa-clock-rotate-left"></i><span>History</span>
             </div>
-            <div class="nav-item-custom" data-nav="admin" id="adminBottomNav" style="display:none;">
+            <div class="nav-item-custom" data-nav="admin" id="adminBottomNav" style="display:none;" onclick="window.navTo('admin')">
                 <i class="fa-solid fa-shield-halved"></i><span>Admin</span>
             </div>
-            <div class="nav-item-custom" data-nav="settings">
+            <div class="nav-item-custom" data-nav="settings" onclick="window.navTo('settings')">
                 <i class="fa-solid fa-gear"></i><span>Settings</span>
             </div>
         </nav>
@@ -563,71 +1007,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    /* ============================================================ */
-    /* SUPABASE SETUP */
-    /* ============================================================ */
+    console.log('🚀 GetPace script starting...');
+
+    var SafeStorage = {
+        get: function(key) {
+            try { return localStorage.getItem(key); }
+            catch(e) { return null; }
+        },
+        set: function(key, val) {
+            try { localStorage.setItem(key, val); return true; }
+            catch(e) { return false; }
+        },
+        remove: function(key) {
+            try { localStorage.removeItem(key); return true; }
+            catch(e) { return false; }
+        }
+    };
+
+    window.enterApp = function() {
+        console.log('👋 Enter button clicked');
+        var landing = document.getElementById('landing-screen');
+        var login = document.getElementById('login-screen');
+
+        landing.classList.add('fade-out');
+
+        setTimeout(function() {
+            landing.style.display = 'none';
+            login.style.display = 'flex';
+            console.log('✅ Landing hidden, login shown');
+        }, 500);
+    };
+
+    window.openWhatsApp = function(e) {
+        if (e) e.preventDefault();
+        var phone = '6285803528780';
+        var message = "Hello, Get Pace's Admin! I see the application is very complete for the nutrition and hydration calculator feature as well as workout recomendations. I want to order the application now, can you help me with the order steps? Thank you!";
+        var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
+        console.log('📱 Opening WhatsApp:', phone);
+        window.open(url, '_blank');
+    };
+
     var SUPABASE_URL = 'https://zvbwywxijqyjgkunaqgu.supabase.co';
     var SUPABASE_KEY = 'sb_publishable_QWWmKlC4PGetEI1_Ts6FrQ_aknt2kWL';
     var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase client created');
 
-    /* ============================================================ */
-    /* SEED USERS */
-    /* ============================================================ */
-    var SEED_DATA = [
-        { username: "arinzaadine",    password: "getpace2026", name: "Arinza Adine",    greet: "Arinza",  role: "user" },
-        { username: "prasetyaaldi",   password: "getpace2026", name: "Aldi Prasetya",   greet: "Aldi",    role: "user" },
-        { username: "agathamaria",    password: "getpace2026", name: "Maria Agatha",    greet: "Maria",   role: "user" },
-        { username: "yanuardian",     password: "getpace2026", name: "Yanuar Dian",     greet: "Yanuar",  role: "user" },
-        { username: "pasaribudedy",   password: "getpace2026", name: "Dedy Pasaribu",   greet: "Dedy",    role: "user" },
-        { username: "oddyaurelius",   password: "getpace2026", name: "Oddy Aurelius",   greet: "Oddy",    role: "user" },
-        { username: "petrisiasherly", password: "getpace2026", name: "Sherly Petrisia", greet: "Sherly",  role: "user" },
-        { username: "putraadji",      password: "getpace2026", name: "Adji Putra",      greet: "Adji",    role: "user" },
-        { username: "warsielsyana",   password: "getpace2026", name: "Elsyana Warsi",   greet: "Elsyana", role: "user" },
-        { username: "daryonotitus",   password: "getpace2026", name: "Titus Daryono",   greet: "Titus",   role: "user" },
-        { username: "moshaadmin",     password: "moshaadmin",  name: "Mosha Admin",     greet: "Mosha",   role: "admin" }
-    ];
-
-    window.seedUsers = async function() {
-        console.log('🌱 Starting seed...');
-        var created = 0, failed = 0;
-        for (var i = 0; i < SEED_DATA.length; i++) {
-            var u = SEED_DATA[i];
-            var email = u.username + '@getpace.local';
-            var res = await supabase.auth.signUp({
-                email: email,
-                password: u.password,
-                options: {
-                    data: {
-                        username: u.username,
-                        full_name: u.name,
-                        greet: u.greet,
-                        role: u.role
-                    }
-                }
-            });
-            if (res.error) {
-                if (res.error.message.toLowerCase().includes('already')) {
-                    console.log('⏭️ Skip (exists):', u.username);
-                } else {
-                    console.error('❌ Failed:', u.username, res.error.message);
-                    failed++;
-                }
-            } else {
-                console.log('✅ Created:', u.username);
-                created++;
-            }
-            await supabase.auth.signOut();
-        }
-        console.log('🌱 DONE. Created:', created, '| Failed:', failed);
-        alert('Seed complete! Created: ' + created + ', Failed: ' + failed + '. Now try logging in.');
-    };
-
-    /* ============================================================ */
-    /* LOGO SYSTEM */
-    /* ============================================================ */
     function buildLogoDataURI(bgColor, barColor) {
-        var svg =
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
             '<rect width="100" height="100" fill="' + bgColor + '"/>' +
             '<g fill="' + barColor + '">' +
             '<rect x="8" y="42" width="3" height="16" rx="1.5"/>' +
@@ -647,42 +1073,31 @@
     }
     var LOGO_LIGHT = buildLogoDataURI('#F2D539', '#000000');
     var LOGO_DARK  = buildLogoDataURI('#1a1a1a', '#F2D539');
-
     function setLogoSVG() {
         var theme = document.documentElement.getAttribute('data-bs-theme');
         var svgSrc = theme === 'dark' ? LOGO_DARK : LOGO_LIGHT;
-        ['app-logo', 'login-logo'].forEach(function(id) {
+        ['app-logo', 'login-logo', 'landing-logo'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.src = svgSrc;
         });
     }
     function tryLoadRealLogo(fileName, targetIds) {
         var test = new Image();
-        test.onload = function() {
-            targetIds.forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.src = fileName;
-            });
-        };
+        test.onload = function() { targetIds.forEach(function(id){ var el = document.getElementById(id); if (el) el.src = fileName; }); };
         test.src = fileName;
     }
     function updateLogos() {
         var theme = document.documentElement.getAttribute('data-bs-theme');
         var fileName = theme === 'dark' ? 'foto2.png' : 'foto1.png';
         setLogoSVG();
-        tryLoadRealLogo(fileName, ['app-logo', 'login-logo']);
+        tryLoadRealLogo(fileName, ['app-logo', 'login-logo', 'landing-logo']);
     }
 
-    /* ============================================================ */
-    /* STATE */
-    /* ============================================================ */
     var currentUser = null;
     var currentUserData = null;
     var historyData = [];
+    var currentCheckAnswers = {};
 
-    /* ============================================================ */
-    /* LOGIN */
-    /* ============================================================ */
     async function tryLogin() {
         var userInp = document.getElementById('login-username');
         var passInp = document.getElementById('login-password');
@@ -692,7 +1107,6 @@
 
         var username = (userInp.value || '').trim().toLowerCase();
         var password = (passInp.value || '').trim();
-
         errBox.style.display = 'none';
         infoBox.style.display = 'none';
 
@@ -703,15 +1117,10 @@
         }
 
         var email = username + '@getpace.local';
-
         infoBox.style.display = 'block';
         document.getElementById('login-info-msg').innerText = 'Signing in...';
 
-        var { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
+        var { data, error } = await supabase.auth.signInWithPassword({ email: email, password: password });
         infoBox.style.display = 'none';
 
         if (error) {
@@ -727,12 +1136,14 @@
             greet: meta.greet || username,
             role: meta.role || 'user'
         };
-
+        console.log('✅ Login success:', username);
         await showApp();
     }
 
     async function showApp() {
+        document.body.classList.add('logged-in');
         document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('landing-screen').style.display = 'none';
         document.getElementById('app-wrapper').classList.add('show');
 
         var user = currentUserData;
@@ -759,7 +1170,7 @@
 
         await loadHistory();
         if (isAdmin) await renderAdminPanel();
-        navTo('home');
+        window.navTo('home');
     }
 
     function updateGreeting() {
@@ -770,24 +1181,27 @@
 
     async function handleLogout() {
         await supabase.auth.signOut();
+        document.body.classList.remove('logged-in');
         currentUser = null;
         currentUserData = null;
         historyData = [];
-
+        currentCheckAnswers = {};
         document.getElementById('login-username').value = '';
         document.getElementById('login-password').value = '';
         document.getElementById('app-wrapper').classList.remove('show');
+        document.getElementById('landing-screen').style.display = 'none';
+        document.getElementById('landing-screen').classList.remove('fade-out');
         document.getElementById('login-screen').style.display = 'flex';
     }
 
     function toggleTheme(isDark) {
         var theme = isDark ? 'dark' : 'light';
         document.documentElement.setAttribute('data-bs-theme', theme);
-        localStorage.setItem('getpace_theme_v2', theme);
+        SafeStorage.set('getpace_theme_v2', theme);
         updateLogos();
     }
 
-    function navTo(viewId) {
+    window.navTo = function(viewId) {
         document.querySelectorAll('.view-section').forEach(function(el){ el.classList.remove('active'); });
         var target = document.getElementById('view-' + viewId);
         if (target) target.classList.add('active');
@@ -801,6 +1215,173 @@
 
         if (viewId === 'history') loadHistory();
         if (viewId === 'admin') renderAdminPanel();
+        if (viewId === 'daily') showDailyView();
+    };
+
+    window.goDaily = function() {
+        window.navTo('daily');
+    };
+
+    function showDailyView() {
+        var locked = document.getElementById('daily-locked');
+        var quiz = document.getElementById('daily-quiz');
+        var result = document.getElementById('daily-result');
+
+        if (!locked || !quiz || !result) return;
+
+        locked.style.display = 'none';
+        quiz.style.display = 'none';
+        result.style.display = 'none';
+
+        if (historyData.length === 0) {
+            locked.style.display = 'block';
+            return;
+        }
+
+        var saved = SafeStorage.get('getpace_daily_v1_' + currentUser);
+
+        if (saved) {
+            try {
+                var data = JSON.parse(saved);
+                if (data.answers && data.recommendations) {
+                    currentCheckAnswers = data.answers;
+                    renderDailyResult(data.answers, data.recommendations, data.date);
+                    result.style.display = 'block';
+                    return;
+                }
+            } catch(e) { console.error('Parse error:', e); }
+        }
+
+        resetQuiz();
+        quiz.style.display = 'block';
+    }
+
+    function resetQuiz() {
+        currentCheckAnswers = {};
+        document.querySelectorAll('.quiz-option').forEach(function(el){ el.classList.remove('selected'); });
+        document.querySelectorAll('.quiz-progress .dot').forEach(function(el){ el.classList.remove('done'); });
+    }
+
+    function selectQuizOption(optEl) {
+        var container = optEl.closest('.quiz-options');
+        var name = container.dataset.name;
+        var val = optEl.dataset.val;
+        container.querySelectorAll('.quiz-option').forEach(function(el){ el.classList.remove('selected'); });
+        optEl.classList.add('selected');
+        currentCheckAnswers[name] = val;
+        updateQuizProgress();
+    }
+
+    function updateQuizProgress() {
+        var answered = Object.keys(currentCheckAnswers).length;
+        var dots = document.querySelectorAll('.quiz-progress .dot');
+        dots.forEach(function(d, i){ d.classList.toggle('done', i < answered); });
+    }
+
+    function submitCheck() {
+        if (Object.keys(currentCheckAnswers).length < 10) {
+            alert('Please answer all 10 questions!\n\nAnswered: ' + Object.keys(currentCheckAnswers).length + '/10');
+            return;
+        }
+
+        var lastRec = historyData[0];
+        var target = {
+            tdee: lastRec.tdee,
+            bbi: Number(lastRec.bbi) || 0,
+            weight: Number(lastRec.weight),
+            height: Number(lastRec.height),
+            water: Number(lastRec.water)
+        };
+
+        var recommendations = generatePersonalRecommendations(currentCheckAnswers, target);
+
+        var dataToSave = {
+            date: new Date().toISOString(),
+            answers: currentCheckAnswers,
+            recommendations: recommendations
+        };
+        SafeStorage.set('getpace_daily_v1_' + currentUser, JSON.stringify(dataToSave));
+
+        renderDailyResult(currentCheckAnswers, recommendations, dataToSave.date);
+        document.getElementById('daily-quiz').style.display = 'none';
+        document.getElementById('daily-result').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function generatePersonalRecommendations(ans, target) {
+        var recs = { score: 0, maxScore: 20, nutrition: [], workout: [] };
+        var proteinTarget = Math.round((target.tdee * 0.30) / 4);
+        var waterTarget = target.water;
+        var bmi = target.weight / Math.pow(target.height / 100, 2);
+
+        if (ans.meals === '1') recs.nutrition.push({ label: '⚠️ Only 1 meal', text: 'Try 3 meals tomorrow: breakfast, lunch, dinner. Your metabolism needs consistent fuel.' });
+        else if (ans.meals === '2') { recs.nutrition.push({ label: '🍽️ 2 meals', text: 'Add a healthy snack between lunch & dinner. Try fruit, yogurt, or nuts.' }); recs.score += 1; }
+        else recs.score += 2;
+
+        if (ans.food === 'carbs') recs.nutrition.push({ label: '🍚 Carbs-heavy', text: 'Reduce carbs by 1 scoop. Add protein: eggs, tempeh, or fish. Target: ' + proteinTarget + 'g/day.' });
+        else if (ans.food === 'protein') { recs.score += 2; recs.nutrition.push({ label: '💪 Protein-rich', text: 'Great! Add green veggies for fiber & vitamins.' }); }
+        else if (ans.food === 'veggies') { recs.score += 2; recs.nutrition.push({ label: '🥦 Veggies & Fruits', text: 'Awesome! Ensure protein & carbs are also sufficient.' }); }
+        else if (ans.food === 'junk') recs.nutrition.push({ label: '🍟 Junk food', text: 'Tomorrow swap 1 fried item with fruit or yogurt. Fried food has 2x the calories!' });
+
+        if (ans.veggies === 'none') recs.nutrition.push({ label: '🥦 No veggies', text: 'Aim for 2+ servings of veggies & fruits daily. Add spinach or broccoli.' });
+        else if (ans.veggies === 'one') { recs.score += 1; recs.nutrition.push({ label: '🥦 1 serving', text: 'Push for 2-3 servings tomorrow.' }); }
+        else recs.score += 2;
+
+        if (ans.junk === 'none') { recs.score += 2; recs.nutrition.push({ label: '✅ No junk food', text: 'Excellent! Keep avoiding processed & fried foods.' }); }
+        else if (ans.junk === 'once') { recs.score += 1; recs.nutrition.push({ label: '🍟 1x junk', text: 'Acceptable. Try to reduce next time.' }); }
+        else recs.nutrition.push({ label: '⚠️ Too much junk', text: 'Fried food spikes cholesterol. Try boiled or grilled tomorrow.' });
+
+        if (ans.water === 'low') recs.nutrition.push({ label: '💧 Very low water', text: 'Target: ' + waterTarget + 'L/day. Drink a glass every 2 hours!' });
+        else if (ans.water === 'medium') { recs.score += 1; recs.nutrition.push({ label: '💧 Moderate water', text: 'Push more to reach ' + waterTarget + 'L/day.' }); }
+        else if (ans.water === 'good') { recs.score += 2; recs.nutrition.push({ label: '💧 Good hydration', text: 'Nice! Keep it up.' }); }
+        else { recs.score += 2; recs.nutrition.push({ label: '💧 Excellent hydration', text: 'Perfect!' }); }
+
+        if (ans.sugary === 'none') { recs.score += 2; recs.nutrition.push({ label: '✅ No sugary drinks', text: 'Great! Keep avoiding liquid calories.' }); }
+        else if (ans.sugary === 'once') { recs.score += 1; recs.nutrition.push({ label: '🥤 1 sugary drink', text: 'Replace with water or unsweetened tea next time.' }); }
+        else recs.nutrition.push({ label: '⚠️ Many sugary drinks', text: 'Swap with water, tea, or infused water with lemon.' });
+
+        recs.nutrition.push({ label: '🎯 Calorie target', text: 'Your TDEE: ' + target.tdee + ' kcal/day. To lose: cut 300-500 kcal. Maintain: stay at this number.' });
+
+        if (ans.exercise === 'none') {
+            if (bmi >= 25) recs.workout.push({ label: '🚶 Start light', text: 'BMI ' + bmi.toFixed(1) + '. Start with 20-min walk daily, then increase.' });
+            else recs.workout.push({ label: '🚶 Move', text: 'Try 15-20 min walk tomorrow. Play music to enjoy it.' });
+        } else if (ans.exercise === 'walk') { recs.score += 1; recs.workout.push({ label: '👍 Walking', text: 'Increase to 30 min tomorrow. Add 5 min stretching.' }); }
+        else if (ans.exercise === 'cardio') { recs.score += 2; recs.workout.push({ label: '🏃 Cardio', text: 'Great! Hydrate before & after. Over 1 hour? Add electrolytes.' }); }
+        else if (ans.exercise === 'gym') { recs.score += 2; recs.workout.push({ label: '🏋️ Weight training', text: 'Focus on proper form. Rest 48 hours for same muscle group.' }); }
+
+        if (ans.duration === 'none') recs.workout.push({ label: '⏱️ No duration', text: 'Aim for 30 min moderate activity 5 days/week.' });
+        else if (ans.duration === 'short') { recs.score += 1; recs.workout.push({ label: '⏱️ Short session', text: 'Extend to 30-45 min for better results.' }); }
+        else recs.score += 2;
+
+        if (ans.sleep === 'low') recs.workout.push({ label: '😴 Sleep deprived', text: 'Sleep < 5 hours hurts recovery. Aim 7-8 hours tonight.' });
+        else if (ans.sleep === 'medium') { recs.score += 1; recs.workout.push({ label: '😴 Sleep okay', text: 'Try 7-8 hours. Sleep repairs muscles!' }); }
+        else { recs.score += 2; recs.workout.push({ label: '😴 Good sleep', text: 'Excellent! Sleep is key for recovery.' }); }
+
+        if (ans.mood === 'tired') recs.workout.push({ label: '😴 Tired', text: 'Prioritize sleep. Light stretching or walk only.' });
+        else if (ans.mood === 'ok') { recs.score += 1; recs.workout.push({ label: '😐 Okay', text: 'Try an activity you enjoy: cycling, swimming, or basketball.' }); }
+        else recs.score += 2;
+
+        recs.workout.push({ label: '📊 Overall plan', text: bmi < 18.5 ? 'BMI underweight. Focus on strength training & eat more.' : (bmi < 25 ? 'BMI ideal! Cardio 3x + strength 3x per week.' : 'BMI overweight. Cardio 4-5x + strength 2x per week + calorie deficit.') });
+
+        return recs;
+    }
+
+    function renderDailyResult(answers, recs, dateStr) {
+        var d = new Date(dateStr);
+        document.getElementById('result-date').innerText = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        document.getElementById('result-score').innerText = recs.score + ' / ' + recs.maxScore;
+        var pct = recs.score / recs.maxScore;
+        var badgeEl = document.getElementById('result-score-badge');
+        badgeEl.className = 'score-badge ' + (pct >= 0.7 ? 'score-good' : (pct >= 0.4 ? 'score-ok' : 'score-bad'));
+
+        document.getElementById('out-personal-nutrition').innerHTML = recs.nutrition.map(function(r) {
+            return '<div class="rec-item"><div class="rec-label">' + r.label + '</div><div class="rec-text">' + r.text + '</div></div>';
+        }).join('');
+
+        document.getElementById('out-personal-workout').innerHTML = recs.workout.map(function(r) {
+            return '<div class="rec-item"><div class="rec-label">' + r.label + '</div><div class="rec-text">' + r.text + '</div></div>';
+        }).join('');
     }
 
     function hitungBBI(tinggi, gender) {
@@ -808,61 +1389,6 @@
         var faktor = gender === 'male' ? 0.10 : 0.15;
         var bbi = base - (base * faktor);
         return { bbi: bbi, min: bbi * 0.9, max: bbi * 1.1 };
-    }
-
-    function generateNutrition(proGram, fatGram, carGram, berat) {
-        var p = {
-            dadaAyam: Math.round(proGram * 0.35),
-            telur: Math.round(proGram * 0.20 / 6),
-            tahuTempe: Math.round(proGram * 0.15),
-            ikan: Math.round(proGram * 0.20),
-            susu: Math.round(proGram * 0.10 / 8),
-            nasiMerah: Math.round(carGram * 0.35 / 25),
-            oatmeal: Math.round(carGram * 0.15 / 27),
-            ubi: Math.round(carGram * 0.15 / 20),
-            roti: Math.round(carGram * 0.15 / 15),
-            alpukat: Math.round(fatGram * 0.30 / 15),
-            minyakZaitun: Math.round(fatGram * 0.20 / 14),
-            kuningTelur: Math.round(fatGram * 0.15 / 5),
-            keju: Math.round(fatGram * 0.15 / 7),
-            buah: Math.max(2, Math.round(berat / 30)),
-            sayur: Math.max(2, Math.round(berat / 25))
-        };
-        return [
-            { label: "🍗 Animal Protein", val: "Chicken breast <b>"+p.dadaAyam+"g</b> · Eggs <b>"+Math.max(1,p.telur)+" pcs</b> · Fish <b>"+p.ikan+"g</b>" },
-            { label: "🌱 Plant Protein", val: "Tofu/Tempeh <b>"+p.tahuTempe+"g</b> · Milk <b>"+Math.max(1,p.susu)+" glasses</b>" },
-            { label: "🍚 Complex Carbs", val: "Brown rice <b>"+p.nasiMerah+" scoops</b> · Oatmeal <b>"+Math.max(1,p.oatmeal)+" servings</b>" },
-            { label: "🥔 Extra Carbs", val: "Sweet potato <b>"+(p.ubi*100)+"g</b> · Whole wheat bread <b>"+Math.max(1,p.roti)+" slices</b>" },
-            { label: "🥑 Healthy Fats", val: "Avocado <b>"+Math.max(1,Math.round(p.alpukat/2))+" pcs</b> · Olive oil <b>"+Math.max(1,p.minyakZaitun)+" tbsp</b>" },
-            { label: "🧀 Extra Fats", val: "Egg yolks <b>"+Math.max(1,p.kuningTelur)+"</b> · Cheese <b>"+Math.max(1,p.keju)+" slices</b>" },
-            { label: "🥦 Vegetables", val: "Minimum <b>"+p.sayur+" servings</b>/day" },
-            { label: "🍎 Fruits", val: "<b>"+p.buah+" servings</b>/day" },
-            { label: "💧 Water", val: "<b>"+((berat*35)/1000).toFixed(1)+" liters</b>/day" }
-        ];
-    }
-
-    function generateWorkoutPlan(bmi) {
-        if (bmi < 18.5) return [
-            { label: "Warm Up", val: "Jumping Jacks 3 mins" },
-            { label: "Push Ups", val: "3 Sets x 8-10 Reps" },
-            { label: "Bodyweight Squats", val: "3 Sets x 12 Reps" },
-            { label: "Sit Ups", val: "3 Sets x 15 Reps" },
-            { label: "Plank Hold", val: "3 Sets x 30 sec" }
-        ];
-        if (bmi >= 25) return [
-            { label: "Jogging", val: "20-30 Mins" },
-            { label: "Knee Push Ups", val: "3 Sets x 10 Reps" },
-            { label: "Bicycle Crunches", val: "3 Sets x 20 Reps" },
-            { label: "Low-impact Burpees", val: "3 Sets x 8 Reps" },
-            { label: "Cool Down", val: "5 mins walk" }
-        ];
-        return [
-            { label: "Light Jogging", val: "15 Mins" },
-            { label: "Push Ups", val: "4 Sets x 12-15 Reps" },
-            { label: "Lunges", val: "3 Sets x 10 Reps (per leg)" },
-            { label: "Sit Ups", val: "4 Sets x 20 Reps" },
-            { label: "Plank Hold", val: "3 Sets x 45 sec" }
-        ];
     }
 
     async function handleCalculate() {
@@ -902,49 +1428,22 @@
         statusEl.className = 'badge rounded-pill px-3 py-2 ' + color;
         statusEl.innerText = status + ' (' + (selisih>=0?'+':'') + selisih + ' kg from IBW)';
 
-        var nutri = generateNutrition(pro, fat, car, w);
-        document.getElementById('out-nutrition').innerHTML = nutri.map(function(i){
-            return '<li><span class="result-label text-success">' + i.label + '</span><span class="result-val font-mono">' + i.val + '</span></li>';
-        }).join('');
-
-        var workout = generateWorkoutPlan(bmi);
-        document.getElementById('out-workout').innerHTML = workout.map(function(i){
-            return '<li><span class="result-label text-brand">' + i.label + '</span><span class="result-val font-mono fw-bold">' + i.val + '</span></li>';
-        }).join('');
-
         await saveRecord(w, h, Math.round(tdee), water.toFixed(1), bbiData.bbi);
-        navTo('results');
+        window.navTo('results');
     }
 
     async function saveRecord(w, h, tdee, water, bbi) {
         var { error } = await supabase.from('history').insert({
-            user_id: currentUser,
-            weight: w,
-            height: h,
-            tdee: tdee,
-            water: water,
-            bbi: bbi
+            user_id: currentUser, weight: w, height: h, tdee: tdee, water: water, bbi: bbi
         });
-        if (error) {
-            console.error('Save error:', error);
-            alert('Failed to save to cloud: ' + error.message);
-            return;
-        }
+        if (error) { console.error('Save error:', error); alert('Failed to save: ' + error.message); return; }
         await loadHistory();
     }
 
     async function loadHistory() {
         if (!currentUser) return;
-        var { data, error } = await supabase
-            .from('history')
-            .select('*')
-            .eq('user_id', currentUser)
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            console.error('Load history error:', error);
-            return;
-        }
+        var { data, error } = await supabase.from('history').select('*').eq('user_id', currentUser).order('created_at', { ascending: false });
+        if (error) { console.error('Load history error:', error); return; }
         historyData = data || [];
         renderHistory();
     }
@@ -959,7 +1458,6 @@
         var container = document.getElementById('history-container');
         if (!container) return;
         container.innerHTML = '';
-
         if (historyData.length === 0) {
             container.innerHTML = '<div class="text-center mt-5 small" style="color:var(--text-muted);">No data yet. Calculate to save.</div>';
             return;
@@ -981,56 +1479,63 @@
 
     async function renderAdminPanel() {
         if (!currentUserData || currentUserData.role !== 'admin') return;
+        var tbody = document.getElementById('admin-recap-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</td></tr>';
 
-        var { data: profiles, error: pErr } = await supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: true });
+        var { data: profiles, error: pErr } = await supabase.from('profiles').select('*');
+        if (pErr) { tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-3">Error: ' + pErr.message + '</td></tr>'; return; }
 
-        if (pErr) { console.error('Admin profiles error:', pErr); return; }
-
-        var { data: allHistory, error: hErr } = await supabase
-            .from('history')
-            .select('*');
-
-        if (hErr) { console.error('Admin history error:', hErr); }
+        var { data: allHistory } = await supabase.from('history').select('*').order('created_at', { ascending: false });
+        allHistory = allHistory || [];
 
         var totalUsers = profiles.filter(function(p){ return p.role !== 'admin'; }).length;
-        var totalRecords = (allHistory || []).length;
-        var activeUserIds = {};
-        (allHistory || []).forEach(function(h){ activeUserIds[h.user_id] = true; });
-        var activeUsers = Object.keys(activeUserIds).length;
+        var activeIds = {};
+        allHistory.forEach(function(h){ activeIds[h.user_id] = true; });
+        var activeUsers = Object.keys(activeIds).length;
+        var avgTdee = 0;
+        if (allHistory.length > 0) avgTdee = Math.round(allHistory.reduce(function(a, h){ return a + (h.tdee||0); }, 0) / allHistory.length);
 
         document.getElementById('stat-total-users').innerText = totalUsers;
-        document.getElementById('stat-total-records').innerText = totalRecords;
         document.getElementById('stat-active-users').innerText = activeUsers;
+        document.getElementById('stat-total-records').innerText = allHistory.length;
+        document.getElementById('stat-avg-tdee').innerText = avgTdee;
 
-        var container = document.getElementById('admin-user-list');
-        container.innerHTML = '';
-        profiles.forEach(function(p) {
+        var rows = profiles.map(function(p) {
+            var userRecs = allHistory.filter(function(h){ return h.user_id === p.id; });
+            var last = userRecs[0];
+            var avg = 0;
+            if (userRecs.length > 0) avg = Math.round(userRecs.reduce(function(a, h){ return a + (h.tdee||0); }, 0) / userRecs.length);
+            var lastDate = last ? new Date(last.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
             var isAdm = p.role === 'admin';
-            var userRecords = (allHistory || []).filter(function(h){ return h.user_id === p.id; });
-            var initials = (p.full_name || p.username || '?').split(' ').map(function(n){ return n[0]; }).join('').substring(0,2).toUpperCase();
-            var card = document.createElement('div');
-            card.className = 'p-3 rounded-4 d-flex align-items-center gap-3';
-            card.style.background = 'rgba(150,150,150,0.08)';
-            card.innerHTML = '<div class="user-avatar ' + (isAdm ? 'admin-avatar' : '') + '">' + initials + '</div>' +
-                '<div class="flex-grow-1"><div class="fw-bold small">' + (p.full_name || p.username) + (isAdm ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
-                '<div class="small font-mono" style="color:var(--text-muted);">@' + p.username + '</div></div>' +
-                '<div class="text-end small"><div class="fw-bold text-brand">' + userRecords.length + ' calc</div></div>';
-            container.appendChild(card);
+            return '<tr>' +
+                '<td><div class="fw-bold small">' + (p.full_name || p.username) + (isAdm ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
+                '<div class="small font-mono text-muted">@' + p.username + '</div></td>' +
+                '<td class="text-center fw-bold text-brand">' + userRecs.length + '</td>' +
+                '<td class="text-center font-mono small">' + (userRecs.length > 0 ? avg + ' kcal' : '—') + '</td>' +
+                '<td class="small">' + lastDate + '</td>' +
+            '</tr>';
         });
+        tbody.innerHTML = rows.join('');
     }
 
     document.addEventListener('click', function(e) {
         var t = e.target;
-        var id = t.id;
 
-        if (id === 'btnLogin' || (t.closest && t.closest('#btnLogin'))) { tryLogin(); return; }
-        if (id === 'btnSeed' || (t.closest && t.closest('#btnSeed'))) { window.seedUsers(); return; }
-        if (id === 'btnCalculate' || (t.closest && t.closest('#btnCalculate'))) { handleCalculate(); return; }
-        if (id === 'btnLogout' || (t.closest && t.closest('#btnLogout'))) { handleLogout(); return; }
+        if (t.id === 'btnLogin' || (t.closest && t.closest('#btnLogin'))) { tryLogin(); return; }
+        if (t.id === 'btnCalculate' || (t.closest && t.closest('#btnCalculate'))) { handleCalculate(); return; }
+        if (t.id === 'btnLogout' || (t.closest && t.closest('#btnLogout'))) { handleLogout(); return; }
+        if (t.id === 'btnRefreshAdmin' || (t.closest && t.closest('#btnRefreshAdmin'))) { renderAdminPanel(); return; }
+        if (t.id === 'btnSubmitCheck' || (t.closest && t.closest('#btnSubmitCheck'))) { submitCheck(); return; }
+        if (t.id === 'btnNewCheck' || (t.closest && t.closest('#btnNewCheck'))) {
+            SafeStorage.remove('getpace_daily_v1_' + currentUser);
+            showDailyView();
+            return;
+        }
         if (t.closest && t.closest('[data-action="logout"]')) { handleLogout(); return; }
+
+        var quizOpt = t.closest && t.closest('.quiz-option');
+        if (quizOpt) { selectQuizOption(quizOpt); return; }
 
         var genderBtn = t.closest && t.closest('.gender-btn');
         if (genderBtn) {
@@ -1041,44 +1546,44 @@
         }
 
         var navEl = t.closest && t.closest('[data-nav]');
-        if (navEl) { navTo(navEl.dataset.nav); return; }
+        if (navEl) { window.navTo(navEl.dataset.nav); return; }
 
         var dnavBtn = t.closest && t.closest('.dnav-btn');
-        if (dnavBtn && dnavBtn.dataset.view) { navTo(dnavBtn.dataset.view); return; }
+        if (dnavBtn && dnavBtn.dataset.view) { window.navTo(dnavBtn.dataset.view); return; }
 
         var delBtn = t.closest && t.closest('[data-del]');
         if (delBtn) { deleteRecord(delBtn.dataset.del); return; }
     });
 
     document.addEventListener('change', function(e) {
-        if (e.target.id === 'themeSwitch') {
-            toggleTheme(e.target.checked);
-        }
+        if (e.target.id === 'themeSwitch') toggleTheme(e.target.checked);
     });
 
     document.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && (e.target.id === 'login-username' || e.target.id === 'login-password')) {
-            tryLogin();
-        }
+        if (e.key === 'Enter' && (e.target.id === 'login-username' || e.target.id === 'login-password')) tryLogin();
     });
 
     (async function init() {
-        var savedTheme = localStorage.getItem('getpace_theme_v2') || 'light';
+        var savedTheme = SafeStorage.get('getpace_theme_v2') || 'light';
         document.documentElement.setAttribute('data-bs-theme', savedTheme);
         var ts = document.getElementById('themeSwitch');
         if (ts) ts.checked = (savedTheme === 'dark');
         updateLogos();
 
-        var { data: { session } } = await supabase.auth.getSession();
-        if (session && session.user) {
-            var meta = session.user.user_metadata || {};
-            currentUser = session.user.id;
-            currentUserData = {
-                name: meta.full_name || 'User',
-                greet: meta.greet || 'User',
-                role: meta.role || 'user'
-            };
-            await showApp();
+        try {
+            var { data: { session } } = await supabase.auth.getSession();
+            if (session && session.user) {
+                var meta = session.user.user_metadata || {};
+                currentUser = session.user.id;
+                currentUserData = {
+                    name: meta.full_name || 'User',
+                    greet: meta.greet || 'User',
+                    role: meta.role || 'user'
+                };
+                await showApp();
+            }
+        } catch(e) {
+            console.warn('Session check failed:', e.message);
         }
     })();
     </script>
